@@ -1,0 +1,5 @@
+src/examples
+*.pdf
+*.ps
+*.o
+cellxplosion

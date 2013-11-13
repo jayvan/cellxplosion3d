@@ -1,0 +1,142 @@
+\documentclass {article}
+\usepackage{fullpage}
+
+\begin{document}
+
+~\vfill
+\begin{center}
+\Large
+
+A5 Project Proposal
+
+Title: Cellxplosion 3D
+
+Name: Justin Vanderheide
+
+Student ID: 20372027
+
+User ID: jtvander
+\end{center}
+\vfill ~\vfill~
+\newpage
+\noindent{\Large \bf Final Project:}
+\begin{description}
+\item[Purpose]:\\
+        To reimagine the hit 2012 game Cellxplosion in three dimensions with OpenGL.
+
+\item[Statement]:\\
+Cellxplosion is a top down arcade style typing game.
+It was originally written for Molyjam 2012, a 48 hour game development contest.
+You can play it online at: http://www.cellxplosion.com
+This project will recreate the heartpounding gameplay of the original game in 3D.
+
+To complete this project I will be porting the game logic from Javascript to C++, and then implementing the view of the game in OpenGL. I will begin my porting the game code, and getting all of the gameplay algorithms working. I will then represent the various game elements with cubes, and build out the graphical features from there.
+
+This project will be very interesting for me because I am very proud of the original Cellxplosion, I'm very excited to take it to three dimensions and add some new gameplay and graphical features.
+This project will be challenging because all of my game experience has been in Javascript.
+The only experience I have in C++ and OpenGL is through assignments at Waterloo. Furthermore I will be using particle systems, bump mapping, simple aniomations, and doing simple physics simulations for the first time.
+
+I will learn a wide variety of C++ and OpenGL technologies throughout this project. Specifically I will learn: Audio playback through C++, texturing, bump mapping, simple physics simulation, simple animation, particle effects, and randomly generating models with context free grammars.
+
+\item[Technical Outline]:\\
+The typing system in Cellxplosion was designed after carefully analyzing other typing games.
+Some typing games have the problem of "lock-in", which occurs when two words that can be typed start with the same letter, and after pressing the letter the player is forced into completing one of the two words, but not the other.
+To prevent this the Cellxplosion typing engine maintains a list of possible words, rather than one single possible word.
+When porting the code this feature and all other considerations that were made when designing the system must all be carried over to preserve the gameplay experience.
+
+In the original Cellxplosion zombies can collide and it isn't a big deal because of the 2D graphics. In 3D however I will need to make sure that the zombies don't collide with one another.
+If a zombie's movement during an update tick causes it to intersect with another zombie it will be moved outside of collision range in the direction opposite the direction of intersection.
+It will then move perpendicular to the direction of enemy intersection, towards the player.
+I will vary the speeds of the zombies enough that they don't form walls that move towards the player.
+
+The player and enemies must have different models in order to differentiate them.
+The player model will be my model from A3, however I will have to create a new model for the zombies. This model should have leg joints for animation, however the arms can be less complex since zombies have limited mobility in their arms.
+
+Post processing can add interesting effects to the final image the player sees.
+Similar to the original Cellxplosion, I will apply a red blurring effect when bosses spawn to warn the player. I will also apply a blurring effect when the player is dying.
+
+Textures make graphics looks much better than plain colour materials.
+I will apply a varity of cloth textures and skin textures to the zombies to differentiate them from one another. These textures will be mapped to the zombies geometry.
+
+Normal mapping can give a more realistic look to some materials, since it prevents them from looking perfectly smooth. The pavement in the parking lot will have a normal map applied to give it a more realistic look.
+
+I will be using shadow maps instead of shadow volumes to create shadows on the pavement since the player and enemy are animated.
+If I were using shadow volumes I would have to recalculate the extrusion every frame, so I would get worse performance.
+To show that shadows are implemented with a shadow map there will be a toggle option to render the shadow map instead of the game.
+
+If enemies just dissapear when you defeat them it is unsatisfying.
+I will extend the SceneNode structure to allow for separations of nodes so that I can explode enemies and have their limbs fly freely.
+The initial velocity of each limb will be randomised, and it will have acceleration in the -y direction.
+Upon touching the ground it will lose all velocity and dissapear after a few seconds.
+
+Animations make models looks like they are moving rather than floating. I will create simple keyframe animations for the player and zombies which will be played when they are moving. When the player is at rest the animation will not play. The zombies never rest.
+
+Watching limbs fly when defeating enemies is satisfying, but it is more satisfying to watch things explode and bleed. I will implement a particle system that will allow for explosion and blood effects when the player or enemies die. The particle system will be created on death, and persist for a couple of seconds.
+
+Mutants aren't all made the same, so the boss mutants will be created using a context free grammar. The legs will be fixed, to ease animation, however the grammer will allow for arbitrary height torsos, and arms with the ability to fork additional limbs.
+
+The following features are nice to have, and will be implemented after all of the marked objectives.
+
+The sound effects in Cellxplosion are very important since they signal key events to the player.
+Sound effects will be played through OpenAL which allows for positional audio.
+Players equipped with surround sound audio systems will be able to tell where explosions are coming from. This will be added last since it is not a demonstration of computer graphics.
+
+Many games shrink or expand the field of view based on intensity of the gameplay.
+For example Geometry Wars increases the FoV when there are more enemies on screen.
+Cellxplosion 3D will have a similar effect to immerse the player in the game.
+
+\item[Bibliography]:\\
+\begin{enumerate}
+\item The original Cellxplosion code https://github.com/jayvan/cellsplosion
+
+\item OpenAL Audio Playback Reference http://kcat.strangesoft.net/openal.html
+
+\item Free Texture Library http://www.mayang.com/textures/
+
+\item Introductory Tutorial to Particle Systems http://www.swiftless.com/tutorials/opengl/particles.html
+
+\item OpenGL Fog Reference http://www.opengl.org/sdk/docs/man2/xhtml/glFog.xml
+
+\item OpenGL Normal Mapping Tutorial http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
+
+\item OpenGL Shadow Mapping Tutorial http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
+
+\item OpenGL Post-Processing http://en.wikibooks.org/wiki/OpenGL\_Programming/Post-Processing
+
+\item Intersection Detection of Two Ellipsoids http://courses.cs.washington.edu/courses/csep521/07wi/prj/duzak.pdf
+
+\end{enumerate}
+
+\end{description}
+\newpage
+
+
+\noindent{\Large\bf Objectives:}
+
+{\hfill{\bf Full UserID:\rule{2in}{.1mm}}\hfill{\bf Student ID:\rule{2in}{.1mm}}\hfill}
+
+\begin{enumerate}
+     \item[\_\_\_ 1:]  The game logic and interface from the original cellxplosion game is implemented in C++.
+
+     \item[\_\_\_ 2:]  The player and enemies have different models that are created in a lua script.
+
+     \item[\_\_\_ 3:]  The player and enemy models are animated when walking.
+
+     \item[\_\_\_ 4:]  There is a red blurring post processing effect active when bosses appear, and when the player is dying.
+
+     \item[\_\_\_ 5:]  Textures are used for the enemies and are drawn from a pool of possible textures to enhance variety.
+
+     \item[\_\_\_ 6:]  The parking lot floor is enhanced with bump mapping.
+
+     \item[\_\_\_ 7:]  When enemies die their limb geometries detatch, have random rotation, velocity, and have acceleration in the -y direction.
+
+     \item[\_\_\_ 8:]  The player and zombies cast shadows on the ground which are calculated using a shadow map.
+
+     \item[\_\_\_ 9:]  When enemies die there is a particle effect for explosions and blood.
+
+     \item[\_\_\_ 10:]  Boss mutants are randomly generated with limbs using a context free grammar.
+\end{enumerate}
+
+% Delete % at start of next line if this is a ray tracing project
+% A4 extra objective:
+\end{document}
