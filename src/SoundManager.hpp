@@ -18,12 +18,13 @@
 // include SDL header files
 #include "SDL.h"
 #include "SDL_mixer.h"
+#include <string>
 
 // if you want more than 100 sounds, change the MAX_SOUND
 #define MAX_SOUNDS 100
 #define MAX_MUSIC 100
 
-// wrapper calss around SDL and SDL_mixer libraries
+// wrapper class around SDL and SDL_mixer libraries
 class SoundManager {
   public:
     SoundManager();
@@ -31,7 +32,7 @@ class SoundManager {
 
     // manipulating sound clips
     // sound clips can be played simultaneously
-    int LoadSound(char* file);
+    int LoadSound(std::string file);
 
     // snd is the sound ID returned by LoadSound
     int PlaySound(int snd);

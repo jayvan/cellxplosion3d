@@ -13,7 +13,7 @@
  *
  * ****************************************************************/
 #pragma implementation
-#include "SoundManager.h"
+#include "SoundManager.hpp"
 #include <stdlib.h>
 
 
@@ -55,14 +55,12 @@ int SoundManager::ResetSound(int snd){
     return 0;
 }
 
-int SoundManager::LoadSound(char* file){
-
-    chunks[nSounds] = Mix_LoadWAV(file);
+int SoundManager::LoadSound(std::string file){
+    chunks[nSounds] = Mix_LoadWAV(file.c_str());
     channel[nSounds] = -1;
 
     nSounds+=1;
     return nSounds - 1;
-
 }
 
 int SoundManager::PlaySound(int snd){

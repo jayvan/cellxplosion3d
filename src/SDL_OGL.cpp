@@ -13,7 +13,7 @@
  * Notes: Based on an SDL tutorial from SDL's web site
  *
  * ****************************************************************/
-#include "SDL_OGL.h"
+#include "SDL_OGL.hpp"
 #include <stdio.h>
 
 

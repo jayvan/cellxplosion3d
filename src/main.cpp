@@ -1,21 +1,9 @@
-/* ***************************************************************
- *
- * File :  main.cpp
- *
- * Author : Tiberiu Popa
- *          J. Alexander Clarke
- * Date   : June 18th, 2002
- *
- * Modified:
- *
- * Purpose: Simple OpenGL program to illustrate the use of SDL with OpenGL
- *
- * Notes: Based on an SDL tutorial from SDL's web site
- *
- * ****************************************************************/
+#include "SDL_OGL.hpp"
+#include "SoundManager.hpp"
+#include <string>
 
-#include "SDL_OGL.h"
-#include "SoundManager.h"
+using namespace std;
+
 #define MICKEY 1
 float xpos = 0, ypos = 0;
 int oldx = 0, oldy = 0;
@@ -24,22 +12,22 @@ int music_on = 0;
 
 void makeMickey()
 	{
-        GLUquadricObj* qsphere = gluNewQuadric();
-	glNewList(MICKEY, GL_COMPILE);
+          GLUquadricObj* qsphere = gluNewQuadric();
+          glNewList(MICKEY, GL_COMPILE);
 
-    	gluQuadricDrawStyle(qsphere, GLU_FILL);
-    	gluQuadricNormals(qsphere, GLU_SMOOTH);
-    	gluQuadricOrientation(qsphere, GLU_OUTSIDE);
-    	gluQuadricTexture(qsphere, GL_FALSE);
+          gluQuadricDrawStyle(qsphere, GLU_FILL);
+          gluQuadricNormals(qsphere, GLU_SMOOTH);
+          gluQuadricOrientation(qsphere, GLU_OUTSIDE);
+          gluQuadricTexture(qsphere, GL_FALSE);
 
-    	glColor3f(1,1,0);
-    	gluSphere(qsphere, 13, 20, 20);
-    	glTranslatef(14,14,0);
-    	gluSphere(qsphere, 10, 20, 20);
-    	glTranslatef(-28,0,0);
-    	gluSphere(qsphere, 10, 20, 20);
-    	glEndList();
-        gluDeleteQuadric(qsphere);
+          glColor3f(1,1,0);
+          gluSphere(qsphere, 13, 20, 20);
+          glTranslatef(14,14,0);
+          gluSphere(qsphere, 10, 20, 20);
+          glTranslatef(-28,0,0);
+          gluSphere(qsphere, 10, 20, 20);
+          glEndList();
+          gluDeleteQuadric(qsphere);
 	}
 
 void DrawGLScene(){
@@ -93,31 +81,6 @@ void handleKey(SDL_KeyboardEvent key) {
 
 }
 
-void handleMouseMotion(SDL_MouseMotionEvent motion){
-
-    xpos += (float)(motion.x-oldx)/10.0f;
-    ypos += -(float)(motion.y-oldy)/10.0f;
-    oldx = motion.x; oldy = motion.y;
-}
-
-void handleMouseButtons(SDL_MouseButtonEvent button){
-
-    if(button.type == SDL_MOUSEBUTTONDOWN){
-	switch (button.button){
-	case 1/*LMB*/: SM.PlaySound(0);break;
-	case 2/*MMB*/:SM.PlaySound(1);break;
-	case 3/*RMB*/: SM.PlaySound(2);break;
-	}// switch
-    } else { /* SDL_MOUSEBUTTONUP */
-	switch (button.button){
-	case 1: SM.StopSound(0);break;
-	case 2: SM.StopSound(1);break;
-	case 3:SM.StopSound(2);break;
-	} // switch
-    }// if ... else
-
-}
-
 int main(int argc, char *argv[])
 {
   Uint8* keys;
@@ -156,22 +119,12 @@ int main(int argc, char *argv[])
       case SDL_KEYUP:
 	  handleKey(event.key);
 	  break;
-
-      case SDL_MOUSEMOTION:
-	  SDL_PeepEvents (&event,9,SDL_GETEVENT,SDL_MOUSEMOTION);
-	  handleMouseMotion(event.motion);
-          //this affects the screen.
-	  break;
-      case SDL_MOUSEBUTTONDOWN:
-      case SDL_MOUSEBUTTONUP:
-	  handleMouseButtons(event.button);
-	  break;
-        case SDL_QUIT:
-          // then we're done and we'll end this program
-          done=1;
-          break;
-        default:
-          break;
+      case SDL_QUIT:
+        // then we're done and we'll end this program
+        done=1;
+        break;
+      default:
+        break;
       }// switch
 
     }// while
@@ -181,11 +134,9 @@ int main(int argc, char *argv[])
 
     // and check if ESCAPE has been pressed. If so then quit
     if(keys[SDLK_ESCAPE]) done=1;
-  }// while done
+  }
 
-  // Kill the GL & SDL screens
 
   KillGLWindow();
-  // And quit
   return 0;
 }

@@ -2,4 +2,6 @@ src/examples
 *.pdf
 *.ps
 *.o
+*.d
+*.a
 cellxplosion

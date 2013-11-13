@@ -1,4 +1,3 @@
-
 INCLUDES = \
     -I. \
     -I/usr/include/SDL
@@ -18,29 +17,23 @@ ICCFLAGS = \
 CPP = g++ $(GPPFLAGS)
 #CPP = g++ $(IPPFLAGS)
 
+all: cellxplosion
+
 
 .cpp.o:
 	$(CPP) -g -c -o $@ $<
 .c.o:
 	$(CC) -g -c -o $@ $<
 
-OBJS = \
-    SDL_OGL.o \
-    main.o \
-    SoundManager.o
-
+SOURCES = $(wildcard *.cpp)
+OBJS = $(SOURCES:.cpp=.o)
 
 compileobjs: $(OBJS)
 
-HEADERS = \
-    SDL_OGL.h \
-    SoundManager.h
-
-
-sample_tutorial: $(HEADERS) $(OBJS) Makefile
+cellxplosion: $(OBJS) Makefile
 	$(CPP) -o cellxplosion $(OBJS) $(LIBS)
 
-lib_tutorial: $(HEADERS) $(OBJS) Makefile
+lib_tutorial: $(OBJS) Makefile
 	ar rvs libsm $(OBJS)
 	mv libsm libsm.a
 
