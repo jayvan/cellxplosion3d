@@ -98,9 +98,9 @@ int SoundManager::ResetMusic(int snd){
     return 0;
 }
 
-int SoundManager::LoadMusic(char* file){
+int SoundManager::LoadMusic(std::string file){
 
-    music[nMusics] = Mix_LoadMUS(file);
+    music[nMusics] = Mix_LoadMUS(file.c_str());
 
     nMusics+=1;
     return nMusics - 1;

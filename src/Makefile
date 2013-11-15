@@ -4,11 +4,11 @@ INCLUDES = \
 
 
 LIBS = \
-	-lGL -lGLU -lSDL -lSDL_mixer
+	-lGL -lGLU -lglut -lSDL -lSDL_mixer
 
 GPPFLAGS = \
     $(INCLUDES) \
-
+    -std=c++0x
 
 ICCFLAGS = \
     $(INCLUDES)

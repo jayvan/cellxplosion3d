@@ -43,7 +43,7 @@ class SoundManager {
     // manipulating music clips
     // should have only one music clip
 
-    int LoadMusic(char* file);
+    int LoadMusic(std::string file);
 
     int PlayMusic(int);
     int StopMusic(int);

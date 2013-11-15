@@ -1,142 +1,175 @@
-#include "SDL_OGL.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <sys/time.h>
+#include <algorithm>
+
 #include "SoundManager.hpp"
-#include <string>
+#include "game.hpp"
+
+#ifdef WIN32
+#include <windows.h>
+#endif /* WIN32 */
+
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+
+#ifdef WIN32
+#include "glui.h"
+#else
+//#include <GL/glui.h>
+#endif /* WIN32 */
 
 using namespace std;
 
-#define MICKEY 1
-float xpos = 0, ypos = 0;
-int oldx = 0, oldy = 0;
+//-------------------------------------------------------------------
+// defines
+//-------------------------------------------------------------------
+#define FRAME_TIME 16.0
+#define CALLBACK_QUIT 'q'
 
-int music_on = 0;
+//-------------------------------------------------------------------
+// GLUT data
+//-------------------------------------------------------------------
+int scrWidth, scrHeight;
+Game game;
 
-void makeMickey()
-	{
-          GLUquadricObj* qsphere = gluNewQuadric();
-          glNewList(MICKEY, GL_COMPILE);
+//-------------------------------------
+// fix lights
+//-------------------------------------
 
-          gluQuadricDrawStyle(qsphere, GLU_FILL);
-          gluQuadricNormals(qsphere, GLU_SMOOTH);
-          gluQuadricOrientation(qsphere, GLU_OUTSIDE);
-          gluQuadricTexture(qsphere, GL_FALSE);
+void lights(){
+  GLfloat light_position1[] = {50, 50, 0, 1};
+  GLfloat light1[] = {0.5, 0.5, 0.5, 1};
+  GLfloat light2[] = {0.5, 0.5, .5, 1.0};
+  GLfloat zero[] = {0, 0, 0 , 0};
 
-          glColor3f(1,1,0);
-          gluSphere(qsphere, 13, 20, 20);
-          glTranslatef(14,14,0);
-          gluSphere(qsphere, 10, 20, 20);
-          glTranslatef(-28,0,0);
-          gluSphere(qsphere, 10, 20, 20);
-          glEndList();
-          gluDeleteQuadric(qsphere);
-	}
+  // setup
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
 
-void DrawGLScene(){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glLoadIdentity(); // Reset the view
+  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
-    // move the scene
-    glTranslatef(xpos, ypos, -150);
-    // draw s simple sphere
-    glCallList(MICKEY);
-
-    SDL_GL_SwapBuffers(); // Swap the buffers
+  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 25);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, light2);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, light1);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, light2);
+  glLightfv(GL_LIGHT0, GL_POSITION, light_position1);
 }
 
+//-------------------------------------------------------------------
+// display
+//-------------------------------------------------------------------
+void display(void) {
+  // set up for perspective drawing
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glViewport(0, 0, scrWidth, scrHeight);
+  gluPerspective(40.0, (GLfloat)scrWidth/(GLfloat)scrHeight, 0.1, 1000.0);
 
-void handleKey(SDL_KeyboardEvent key) {
-  switch(key.keysym.sym) {
-  case SDLK_m:
-    if(key.state == SDL_PRESSED) {
-	SM.PlaySound(0);
-    } else {
-	SM.StopSound(0);
-    }// if
-    break;
-  case SDLK_n:
-    if(key.state == SDL_PRESSED) {
-	SM.PlaySound(1);
-    } else {
-	SM.StopSound(1);
-    }// if
-    break;
-  case SDLK_b:
-    if(key.state == SDL_PRESSED) {
-	SM.PlaySound(2);
-    } else {
-	SM.StopSound(2);
-    }// if
-    break;
-  case SDLK_t:
-    if(key.state == SDL_PRESSED) {
-       if (music_on == 0) {
-          SM.PlayMusic(0);
-          music_on = 1;
-       } else {
-	   SM.StopMusic(0);
-	   music_on = 0;
-       }
-    }// if
-    break;
-  }// switch
+  // change to model view for drawing
+  glMatrixMode(GL_MODELVIEW);
 
+  // Reset modelview matrix
+  glLoadIdentity();
+
+  // Clear framebuffer (both colour and depth buffers)
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // enable rescalling of the normals
+  glEnable(GL_NORMALIZE);
+  glEnable(GL_DEPTH_TEST);
+
+  game.render();
+
+  // dump the whole buffer onto the screen should fix my bug
+  glFinish();
+  glutSwapBuffers();
 }
 
-int main(int argc, char *argv[])
-{
-  Uint8* keys;
-  int done=0;
-
-  SM.LoadSound("card.wav");
-  SM.LoadSound("OBS.wav");
-  SM.LoadSound("ghost.wav");
-  SM.LoadMusic("UNREAL.S3M");
-
-
-  // Create a new OpenGL window with the title "Cone3D Basecode" at
-  // 640x480x32, fullscreen and check for errors along the way
-  if(CreateGLWindow("SDL & OpenGL", 640, 480, 16, 0) == 0){
-      printf("Could not initalize OpenGL :(\n\n");
-      KillGLWindow();
-      return 0;
+//-------------------------------------------------------------------
+// keyboard
+//-------------------------------------------------------------------
+void keyboard(unsigned char k, int x, int y) {
+  switch(k) {
+    case CALLBACK_QUIT:
+      exit(0);
+      break;
   }
+}
 
+//-------------------------------------------------------------------
+// init
+//-------------------------------------------------------------------
+void init(int argc, char** argv) {
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_NORMALIZE);
+  glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_DEPTH_TEST);
+  glShadeModel(GL_SMOOTH);
 
-  // Hide the mouse cursor
-  // SDL_ShowCursor(0);
+  // Black Background
+  glClearColor(0.00f, 0.80f, 0.80f, 0.0f);
 
+  lights();
 
-  makeMickey();
-  while(!done){
+  srand(getpid());
+  game = Game();
 
-    // Draw the scene
-    DrawGLScene();
+  //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+}
 
-    // And poll for events
-    SDL_Event event;
-    while ( SDL_PollEvent(&event) ) {
-      switch (event.type) {
-      case SDL_KEYDOWN:
-      case SDL_KEYUP:
-	  handleKey(event.key);
-	  break;
-      case SDL_QUIT:
-        // then we're done and we'll end this program
-        done=1;
-        break;
-      default:
-        break;
-      }// switch
+//-------------------------------------------------------------------
+// reshape
+//-------------------------------------------------------------------
+void reshape(int w, int h) {
+  scrWidth = w;
+  scrHeight = h;
 
-    }// while
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glViewport(0, 0, w, h);
+  gluPerspective(40.0, (GLfloat)w/(GLfloat)h, 0.1, 1000.0);
 
-    // Get the state of the keyboard keys
-    keys = SDL_GetKeyState(NULL);
+  // Reset to modelview matrix mode to avoid confusion later
+  glMatrixMode(GL_MODELVIEW);
+}
 
-    // and check if ESCAPE has been pressed. If so then quit
-    if(keys[SDLK_ESCAPE]) done=1;
-  }
+void update(int value) {
+  game.update(FRAME_TIME);
+  glutPostRedisplay();
+  glutTimerFunc(FRAME_TIME, update, 0);
+}
 
+//-------------------------------------------------------------------
+// main
+//-------------------------------------------------------------------
+int main(int argc, char** argv){
+  int main_window;
+  scrWidth = 700;
+  scrHeight = 700;
 
-  KillGLWindow();
+  //SND_ID_1 = SM.LoadSound("card.wav");
+
+  // intialize glut and main window
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);
+  glutInitWindowSize(scrWidth, scrHeight);
+  main_window = glutCreateWindow("Cellxplosion 3D");
+
+  // initialize callback
+  glutDisplayFunc(display);
+  glutReshapeFunc(reshape);
+  glutKeyboardFunc(keyboard);
+  glutTimerFunc(FRAME_TIME, update, clock());
+
+  init(argc, argv);
+
+  reshape(scrWidth, scrHeight);
+
+  glutMainLoop();
+
   return 0;
 }
+
