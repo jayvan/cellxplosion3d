@@ -1,34 +1,43 @@
-#include "enemy.hpp"
-#include <iostream>
+#include "player.hpp"
 #include <GL/gl.h>
+#include <iostream>
 
 using namespace std;
 
-char randomDigit() {
-  return (rand() % 10) + 48;
-}
-
-Enemy::Enemy() {
-  digitIndex = 0;
-
-  position = Point3D(rand() % 10 - 5, rand() % 10 - 5, 0);
-
-  // Generate the enemies number
-  for (unsigned int i = 0; i < NUMBER_LENGTH; i++) {
-    number.push_back(randomDigit());
+Player::Player() {
+  for (unsigned int i = 0; i < 4; i++) {
+    moveDirection[i] = false;
   }
-
-  speed = 1.0;
 }
 
-// Move closer to player
-// Animate limbs and particle system
-void Enemy::_update(double delta) {
+void Player::setDirection(Direction direction, bool down) {
+  moveDirection[direction] = down;
 
+  // Recalculate velocity
+  // We don't do this relative to just the current key event because we may miss an event
+  // e.g. we don't 'hear' the keyUp, so the next keyDown doubles the player speed
+
+  double yVelocity, xVelocity = 0;
+
+  if (moveDirection[UP])
+    yVelocity++;
+  if (moveDirection[DOWN])
+    yVelocity--;
+  if (moveDirection[LEFT])
+    xVelocity--;
+  if (moveDirection[RIGHT])
+    xVelocity++;
+
+  velocity = Vector3D(xVelocity, yVelocity, 0);
+  velocity.normalize();
+  velocity = PLAYER_SPEED * velocity;
 }
 
-void Enemy::render() {
-  glColor3f(0.333333, 0.066667, 0.066667);
+void Player::_update(double delta) {
+}
+
+void Player::render() {
+  glColor3f(0.0, 0.392157, 0.0);
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
   glBegin(GL_QUADS);

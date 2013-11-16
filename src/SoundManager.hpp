@@ -17,7 +17,7 @@
 
 // include SDL header files
 #include "SDL.h"
-#include "SDL_mixer.h"
+#include "SDL/SDL_mixer.h"
 #include <string>
 
 // if you want more than 100 sounds, change the MAX_SOUND

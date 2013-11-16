@@ -97,6 +97,12 @@ void keyboard(unsigned char k, int x, int y) {
       exit(0);
       break;
   }
+
+  game.handleKey(k, true);
+}
+
+void keyboardUp(unsigned char k, int x, int y) {
+  game.handleKey(k, false);
 }
 
 //-------------------------------------------------------------------
@@ -137,7 +143,7 @@ void reshape(int w, int h) {
 }
 
 void update(int value) {
-  game.update(FRAME_TIME);
+  game.update(FRAME_TIME / 1000.0);
   glutPostRedisplay();
   glutTimerFunc(FRAME_TIME, update, 0);
 }
@@ -162,6 +168,7 @@ int main(int argc, char** argv){
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyboardUp);
   glutTimerFunc(FRAME_TIME, update, clock());
 
   init(argc, argv);
