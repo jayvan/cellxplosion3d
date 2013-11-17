@@ -11,6 +11,7 @@ protected:
 
 public:
   void update(double delta);
+  Point3D getPosition();
 };
 
 #endif

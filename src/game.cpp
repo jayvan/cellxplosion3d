@@ -44,7 +44,8 @@ void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   glLoadIdentity(); // Reset the view
 
-  glTranslated(0.0, 0.0, -25.0);
+  Point3D playerPosition = player.getPosition();
+  glTranslated(-playerPosition[0], -playerPosition[1], -25.0);
 
 
   // Draw enemies
