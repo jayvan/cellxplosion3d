@@ -1,4 +1,5 @@
 #include "enemy.hpp"
+#include "constants.hpp"
 #include <iostream>
 #include <GL/gl.h>
 
@@ -8,13 +9,19 @@ char randomDigit() {
   return (rand() % 10) + 48;
 }
 
+Enemy::Enemy(Point3D position) : Mover(position, Vector3D(1, 1, 1)) {
+  init();
+}
+
 Enemy::Enemy() : Mover(Point3D(), Vector3D(1, 1, 1)) {
+  init();
+}
+
+void Enemy::init() {
   digitIndex = 0;
 
-  position = Point3D(rand() % 20 - 10, rand() % 20 - 10, 0);
-
   // Generate the enemies number
-  for (unsigned int i = 0; i < NUMBER_LENGTH; i++) {
+  for (unsigned int i = 0; i < CONSTANTS::NUMBER_LENGTH; i++) {
     number.push_back(randomDigit());
   }
 

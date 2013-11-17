@@ -3,11 +3,12 @@
 
 #include "enemy.hpp"
 #include "player.hpp"
+#include "wall.hpp"
 #include <list>
 
 class Game {
-  static const unsigned int INITIAL_ENEMIES = 5;
   std::list<Enemy> enemies;
+  std::list<Wall> walls;
   Player player;
 
 public:

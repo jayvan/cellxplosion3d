@@ -1,10 +1,13 @@
 #include "player.hpp"
+#include "constants.hpp"
+
 #include <GL/gl.h>
 #include <iostream>
 
 using namespace std;
 
-Player::Player() : Mover(Point3D(), Vector3D(1,1,1)) {
+Player::Player() : Mover(Point3D(CONSTANTS::AREA_SIZE / 2, CONSTANTS::AREA_SIZE / 2, 0),
+                   Vector3D(1,1,1)) {
   for (unsigned int i = 0; i < 4; i++) {
     moveDirection[i] = false;
   }

@@ -1,15 +1,38 @@
 #include "game.hpp"
+#include "constants.hpp"
+
 #include <list>
 #include <GL/gl.h>
+#include <math.h>
 #include <iostream>
 
 using namespace std;
 
 Game::Game() {
   // Spawn enemies
-  for (unsigned int i = 0; i < INITIAL_ENEMIES; i++) {
-    enemies.push_back(Enemy());
+  for (unsigned int i = 0; i < CONSTANTS::INITIAL_ENEMIES; i++) {
+    double degree = (2.0 * M_PI) * ((double)i / (double)CONSTANTS::INITIAL_ENEMIES);
+    cout << degree << endl;
+    double xPosition = cos(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
+    double yPosition = sin(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
+    Point3D enemyPosition(xPosition, yPosition, 0);
+    cout << enemyPosition << endl;
+    enemies.push_back(Enemy(enemyPosition));
   }
+
+  // Spawn Walls
+  // Bottom
+  walls.push_back(Wall(Point3D(0.0, -(CONSTANTS::WALL_THICKNESS), 0.0),
+        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT)));
+  // Left
+  walls.push_back(Wall(Point3D(-(CONSTANTS::WALL_THICKNESS), 0, 0),
+        Vector3D(CONSTANTS::WALL_THICKNESS, CONSTANTS::AREA_SIZE, CONSTANTS::WALL_HEIGHT)));
+  // Top
+  walls.push_back(Wall(Point3D(0, CONSTANTS::AREA_SIZE, 0),
+        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT)));
+  // Right
+  walls.push_back(Wall(Point3D(CONSTANTS::AREA_SIZE, 0, 0),
+        Vector3D(CONSTANTS::WALL_THICKNESS, CONSTANTS::AREA_SIZE, CONSTANTS::WALL_HEIGHT)));
 }
 
 void Game::handleKey(unsigned char key, bool down) {
@@ -55,6 +78,11 @@ void Game::render() {
   // Draw enemies
   for (Enemy enemy : enemies) {
     enemy.render();
+  }
+
+  // Draw walls
+  for (Wall wall : walls) {
+    wall.render();
   }
 
   player.render();

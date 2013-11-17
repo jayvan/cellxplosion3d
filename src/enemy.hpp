@@ -6,7 +6,7 @@
 #include <string>
 
 class Enemy : public Mover {
-  static const unsigned int NUMBER_LENGTH = 5;
+  void init();
 
   std::string number;
   double speed;
@@ -17,6 +17,7 @@ protected:
 
 public:
   Enemy();
+  Enemy(Point3D position);
   void render();
 };
 

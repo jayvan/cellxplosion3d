@@ -4,7 +4,6 @@
 #include "algebra.hpp"
 #include <vector>
 
-
 class Mover {
 public:
   typedef std::vector<Mover*> CollisionList;
