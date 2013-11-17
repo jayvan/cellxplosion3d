@@ -8,10 +8,10 @@ char randomDigit() {
   return (rand() % 10) + 48;
 }
 
-Enemy::Enemy() {
+Enemy::Enemy() : Mover(Point3D(), Vector3D(1, 1, 1)) {
   digitIndex = 0;
 
-  position = Point3D(rand() % 10 - 5, rand() % 10 - 5, 0);
+  position = Point3D(rand() % 20 - 10, rand() % 20 - 10, 0);
 
   // Generate the enemies number
   for (unsigned int i = 0; i < NUMBER_LENGTH; i++) {

@@ -31,12 +31,16 @@ void Game::handleKey(unsigned char key, bool down) {
 
 // Calls the update methods of each game component
 void Game::update(double delta) {
+  player.update(delta);
+  player.debug = false;
+
   // Update enemies
   for (Enemy enemy : enemies) {
     enemy.update(delta);
+    if (enemy.collidingWith(player)) {
+      player.debug = true;
+    }
   }
-
-  player.update(delta);
 }
 
 // Draw all of the game components

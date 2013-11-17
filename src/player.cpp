@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Player::Player() {
+Player::Player() : Mover(Point3D(), Vector3D(1,1,1)) {
   for (unsigned int i = 0; i < 4; i++) {
     moveDirection[i] = false;
   }
@@ -38,6 +38,10 @@ void Player::_update(double delta) {
 
 void Player::render() {
   glColor3f(0.0, 0.392157, 0.0);
+  if (debug) {
+    glColor3f(1.0, 0.5, 0.0);
+  }
+
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
   glBegin(GL_QUADS);

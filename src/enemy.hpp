@@ -14,6 +14,7 @@ class Enemy : public Mover {
 
 protected:
   void _update(double delta);
+
 public:
   Enemy();
   void render();

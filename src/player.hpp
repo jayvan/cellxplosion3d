@@ -5,9 +5,7 @@
 #include "mover.hpp"
 
 class Player : public Mover {
-  static constexpr double PLAYER_SPEED = 5.0;
-
-
+  static constexpr double PLAYER_SPEED = 10.0;
   bool moveDirection[4];
 
 protected:
@@ -15,6 +13,7 @@ protected:
 
 public:
   enum Direction {UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3};
+  bool debug;
 
   Player();
   void render();
