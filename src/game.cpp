@@ -3,6 +3,7 @@
 
 #include <list>
 #include <GL/gl.h>
+#include <GL/glut.h>
 #include <math.h>
 #include <iostream>
 
@@ -74,7 +75,6 @@ void Game::render() {
   Point3D playerPosition = player.getPosition();
   glTranslated(-playerPosition[0], -playerPosition[1], -25.0);
 
-
   // Draw enemies
   for (Enemy enemy : enemies) {
     enemy.render();
@@ -86,4 +86,5 @@ void Game::render() {
   }
 
   player.render();
+
 }

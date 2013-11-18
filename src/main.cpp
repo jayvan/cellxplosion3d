@@ -15,12 +15,6 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#ifdef WIN32
-#include "glui.h"
-#else
-//#include <GL/glui.h>
-#endif /* WIN32 */
-
 using namespace std;
 
 //-------------------------------------------------------------------
