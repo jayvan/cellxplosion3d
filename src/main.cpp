@@ -27,7 +27,7 @@ using namespace std;
 // GLUT data
 //-------------------------------------------------------------------
 int scrWidth, scrHeight;
-Game game;
+Game* game;
 
 //-------------------------------------
 // fix lights
@@ -75,7 +75,7 @@ void display(void) {
   glEnable(GL_NORMALIZE);
   glEnable(GL_DEPTH_TEST);
 
-  game.render();
+  game->render();
 
   // dump the whole buffer onto the screen should fix my bug
   glFinish();
@@ -92,11 +92,11 @@ void keyboard(unsigned char k, int x, int y) {
       break;
   }
 
-  game.handleKey(k, true);
+  game->handleKey(k, true);
 }
 
 void keyboardUp(unsigned char k, int x, int y) {
-  game.handleKey(k, false);
+  game->handleKey(k, false);
 }
 
 // No special keys used yet
@@ -120,7 +120,7 @@ void init(int argc, char** argv) {
   lights();
 
   srand(getpid());
-  game = Game();
+  game = new Game();
 
   //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
@@ -142,7 +142,7 @@ void reshape(int w, int h) {
 }
 
 void update(int value) {
-  game.update(FRAME_TIME / 1000.0);
+  game->update(FRAME_TIME / 1000.0);
   glutPostRedisplay();
   glutTimerFunc(FRAME_TIME, update, 0);
 }

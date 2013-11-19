@@ -14,9 +14,6 @@ protected:
   Vector3D velocity;
   virtual void _update(double delta) = 0;
 
-private:
-  static unsigned int idCounter;
-
 public:
   Mover(Point3D position, Vector3D size);
   void update(double delta);
