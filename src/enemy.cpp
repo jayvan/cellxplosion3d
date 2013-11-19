@@ -35,6 +35,22 @@ void Enemy::_update(double delta) {
 
 }
 
+bool Enemy::tryDigit(char num) {
+  return number[digitIndex] == num;
+}
+
+void Enemy::advanceDigit() {
+  digitIndex++;
+}
+
+void Enemy::resetDigit() {
+  digitIndex = 0;
+}
+
+bool Enemy::tryDestroy() {
+  return digitIndex == number.length();
+}
+
 void Enemy::render() {
   glColor3f(0.333333, 0.066667, 0.066667);
   glPushMatrix();
@@ -79,10 +95,15 @@ void Enemy::render() {
 
   glEnd();
 
-  glColor3f(1.0, 0, 0);
+  glColor3f(0.0, 0.392157, 0.0);
   glRasterPos2d(0 , -0.4);
-  for (char c : number) {
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+  for (unsigned int i = 0; i < number.length(); i++) {
+    // Change to red for untyped portion
+    if (i == digitIndex) {
+      glColor3f(0.333333, 0.066667, 0.066667);
+      glRasterPos2d(0.26 * digitIndex, -0.4);
+    }
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);
   }
 
   glPopMatrix();

@@ -5,14 +5,22 @@
 #include "player.hpp"
 #include "wall.hpp"
 #include <list>
+#include <string>
 
 class Game {
-  std::list<Enemy> enemies;
+  std::list<Enemy*> enemies;
+  std::list<Enemy*> targetEnemies;
   std::list<Wall> walls;
+  std::string number;
   Player player;
+
+  void dial(char num);
+  void submitNumber();
+  void spawnEnemy();
 
 public:
   Game();
+  ~Game();
   void update(double delta);
   void render();
   void handleKey(unsigned char key, bool down);

@@ -99,6 +99,11 @@ void keyboardUp(unsigned char k, int x, int y) {
   game.handleKey(k, false);
 }
 
+// No special keys used yet
+void keyboardSpecial(int key, int x, int y) {
+
+}
+
 //-------------------------------------------------------------------
 // init
 //-------------------------------------------------------------------
@@ -163,6 +168,7 @@ int main(int argc, char** argv){
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
   glutKeyboardUpFunc(keyboardUp);
+  glutSpecialFunc(keyboardSpecial);
   glutTimerFunc(FRAME_TIME, update, clock());
 
   init(argc, argv);

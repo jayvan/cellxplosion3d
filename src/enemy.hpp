@@ -19,6 +19,10 @@ public:
   Enemy();
   Enemy(Point3D position);
   void render();
+  bool tryDigit(char num);
+  void advanceDigit();
+  void resetDigit();
+  bool tryDestroy();
 };
 
 #endif
