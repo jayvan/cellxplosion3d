@@ -1,6 +1,7 @@
 #include "enemy.hpp"
 #include "constants.hpp"
 #include "scene_lua.hpp"
+
 #include <iostream>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -28,8 +29,15 @@ Enemy::Enemy(Point3D position, Mover& target) : Mover(position, Vector3D(1, 1, 1
 // Move closer to player
 // Animate limbs and particle system
 void Enemy::_update(double delta) {
-  (void)delta;
+  // Look at player
+  Vector3D toPlayer = target.getPosition() - position;
+  double newRotation = atan2(toPlayer[1], toPlayer[0]);
+  node->rotate('y', (newRotation - rotation) * 180.0 / M_PI);
+  rotation = newRotation;
 
+  velocity = toPlayer;
+  velocity.normalize();
+  velocity = speed * velocity;
 }
 
 bool Enemy::tryDigit(char num) {
@@ -53,7 +61,6 @@ void Enemy::render() {
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
   node->walk_gl();
-  glPopMatrix();
 
   // Number
   float green[] = {0.0, 0.392157, 0.0, 1.0};
