@@ -9,6 +9,7 @@ class Player : public Mover {
   static constexpr double PLAYER_SPEED = 10.0;
   bool moveDirection[4];
   SceneNode* node;
+  double rotation;
 
 protected:
   void _update(double delta);

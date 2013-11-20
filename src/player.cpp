@@ -15,6 +15,7 @@ Player::Player() : Mover(Point3D(CONSTANTS::AREA_SIZE / 2, CONSTANTS::AREA_SIZE 
 
   node = import_lua(CONSTANTS::PLAYER_MODEL_PATH);
   size = node->get_size();
+  rotation = 0;
 }
 
 Player::~Player() {
@@ -43,6 +44,16 @@ void Player::setDirection(Direction direction, bool down) {
   velocity = Vector3D(xVelocity, yVelocity, 0);
   velocity.normalize();
   velocity = PLAYER_SPEED * velocity;
+
+  if (velocity.length2() == 0) {
+    return;
+  }
+
+  double newrotation = atan2(yVelocity, xVelocity) * 180.0 / M_PI;
+
+  node->rotate('y', newrotation - rotation);
+
+  rotation = newrotation;
 }
 
 void Player::_update(double delta) {
