@@ -63,19 +63,21 @@ void Enemy::render() {
   glTranslated(position[0], position[1], position[2]);
   node->walk_gl();
 
+  glDisable(GL_LIGHTING);
   // Number
-  float green[] = {0.0, 0.392157, 0.0, 1.0};
-  float red[] = {0.333333, 0.066667, 0.066667, 1.0};
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, green);
+  float green[] = {0.0, 0.392157, 0.0};
+  float red[] = {0.333333, 0.066667, 0.066667};
+  glColor3fv(green);
   glRasterPos2d(0 , -0.4);
   for (unsigned int i = 0; i < number.length(); i++) {
     // Change to red for untyped portion
     if (i == digitIndex) {
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
+      glColor3fv(red);
       glRasterPos2d(0.2425 * digitIndex, -0.4);
     }
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);
   }
+  glEnable(GL_LIGHTING);
 
   glPopMatrix();
 }
