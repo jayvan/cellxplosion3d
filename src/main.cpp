@@ -167,7 +167,7 @@ int main(int argc, char** argv){
 
   // intialize glut and main window
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE);
   glutInitWindowSize(scrWidth, scrHeight);
   glutCreateWindow("Cellxplosion 3D");
 

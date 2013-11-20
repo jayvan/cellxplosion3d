@@ -104,7 +104,7 @@ void Enemy::render() {
     // Change to red for untyped portion
     if (i == digitIndex) {
       glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
-      glRasterPos2d(0.26 * digitIndex, -0.4);
+      glRasterPos2d(0.2425 * digitIndex, -0.4);
     }
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);
   }
