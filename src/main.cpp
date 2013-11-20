@@ -34,21 +34,19 @@ Game* game;
 //-------------------------------------
 
 void lights(){
-  GLfloat light_position1[] = {50, 50, 0, 1};
-  GLfloat light1[] = {0.5, 0.5, 0.5, 1};
-  GLfloat light2[] = {0.5, 0.5, .5, 1.0};
 
-  // setup
+  GLfloat light_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
+  GLfloat light_diffuse[] = { 0.3, 0.3, 0.3, 1.0 };
+  GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+  GLfloat light_position[] = { 100.0, 25.0, 25.0, 1.0 };
+
+  glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-
-  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 25);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light2);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, light1);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, light2);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position1);
 }
 
 //-------------------------------------------------------------------
@@ -120,12 +118,12 @@ void init(int argc, char** argv) {
   (void)argv;
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_NORMALIZE);
-  glEnable(GL_COLOR_MATERIAL);
+  //glEnable(GL_COLOR_MATERIAL);
   glEnable(GL_DEPTH_TEST);
   glShadeModel(GL_SMOOTH);
 
   // Black Background
-  glClearColor(0.00f, 0.80f, 0.80f, 0.0f);
+  glClearColor(1.00f, 1.00f, 1.00f, 0.0f);
 
   lights();
 

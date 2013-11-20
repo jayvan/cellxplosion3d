@@ -96,12 +96,14 @@ void Enemy::render() {
 
   glEnd();
 
-  glColor3f(0.0, 0.392157, 0.0);
+  float green[] = {0.0, 0.392157, 0.0, 1.0};
+  float red[] = {0.333333, 0.066667, 0.066667, 1.0};
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, green);
   glRasterPos2d(0 , -0.4);
   for (unsigned int i = 0; i < number.length(); i++) {
     // Change to red for untyped portion
     if (i == digitIndex) {
-      glColor3f(0.333333, 0.066667, 0.066667);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
       glRasterPos2d(0.26 * digitIndex, -0.4);
     }
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);

@@ -152,8 +152,10 @@ void Game::render() {
   glLoadIdentity(); // Reset the view
 
   Point3D playerPosition = player.getPosition();
-  glTranslated(-playerPosition[0], -playerPosition[1], -25.0);
-  glRotated(-20, 1.0, 0, 0);
+  glRotated(-CONSTANTS::CAMERA_ANGLE, 1.0, 0, 0);
+  glTranslated(-playerPosition[0],
+               -playerPosition[1] + (CONSTANTS::CAMERA_DISTANCE * tan(CONSTANTS::CAMERA_ANGLE_RAD)),
+               -CONSTANTS::CAMERA_DISTANCE);
 
   // Draw enemies
   for (Enemy* enemy : enemies) {

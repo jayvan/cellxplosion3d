@@ -3,6 +3,9 @@
 struct CONSTANTS {
   // Game world
   static const double AREA_SIZE;
+  static const double CAMERA_ANGLE;
+  static const double CAMERA_ANGLE_RAD;
+  static const double CAMERA_DISTANCE;
   static const double WALL_HEIGHT;
   static const double WALL_THICKNESS;
 
