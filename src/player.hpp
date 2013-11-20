@@ -10,6 +10,7 @@ class Player : public Mover {
   bool moveDirection[4];
   SceneNode* node;
   double rotation;
+  double desiredRotation;
 
 protected:
   void _update(double delta);

@@ -16,6 +16,7 @@ Player::Player() : Mover(Point3D(CONSTANTS::AREA_SIZE / 2, CONSTANTS::AREA_SIZE 
   node = import_lua(CONSTANTS::PLAYER_MODEL_PATH);
   size = node->get_size();
   rotation = 0;
+  desiredRotation = 0;
 }
 
 Player::~Player() {
@@ -49,15 +50,35 @@ void Player::setDirection(Direction direction, bool down) {
     return;
   }
 
-  double newrotation = atan2(yVelocity, xVelocity) * 180.0 / M_PI;
-
-  node->rotate('y', newrotation - rotation);
-
-  rotation = newrotation;
+  desiredRotation = atan2(yVelocity, xVelocity) * 180.0 / M_PI;
+  if (desiredRotation < 0) desiredRotation += 360;
 }
 
 void Player::_update(double delta) {
-  (void)delta;
+  double rotDiff = delta * CONSTANTS::ROTATION_SPEED;
+
+  if (abs(rotation - desiredRotation) < rotDiff) {
+    node->rotate('y', desiredRotation - rotation);
+    rotation = desiredRotation;
+    return;
+  }
+
+
+  double clockwiseDist = desiredRotation - rotation;
+  if (clockwiseDist < 0) clockwiseDist += 360;
+
+  double counterclockwiseDist = rotation - desiredRotation;
+  if (counterclockwiseDist < 0) counterclockwiseDist += 360;
+
+  if (clockwiseDist > counterclockwiseDist) {
+    rotation -= rotDiff;
+    node->rotate('y', -rotDiff);
+  } else {
+    rotation += rotDiff;
+    node->rotate('y', rotDiff);
+  }
+  if (rotation < 0) rotation += 360;
+  if (rotation > 360) rotation -= 360;
 }
 
 void Player::render() {

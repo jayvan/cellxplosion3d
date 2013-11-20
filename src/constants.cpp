@@ -9,6 +9,9 @@ const double CONSTANTS::CAMERA_DISTANCE  =   20.0;
 const double CONSTANTS::WALL_HEIGHT      =   3.0;
 const double CONSTANTS::WALL_THICKNESS   =   2.0;
 
+// Player
+const double CONSTANTS::ROTATION_SPEED = 720.0;
+
 // Enemy
 const unsigned int  CONSTANTS::INITIAL_ENEMIES  =   10;
 const unsigned int  CONSTANTS::NUMBER_LENGTH    =   5;

@@ -9,6 +9,9 @@ struct CONSTANTS {
   static const double WALL_HEIGHT;
   static const double WALL_THICKNESS;
 
+  // Player
+  static const double ROTATION_SPEED;
+
   // Enemy
   static const unsigned int INITIAL_ENEMIES;
   static const unsigned int NUMBER_LENGTH;
