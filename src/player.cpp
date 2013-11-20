@@ -82,14 +82,8 @@ void Player::_update(double delta) {
 }
 
 void Player::render() {
-  glColor3f(0.0, 0.392157, 0.0);
-  if (debug) {
-    glColor3f(1.0, 0.5, 0.0);
-  }
-
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
-
   node->walk_gl();
   glPopMatrix();
 }

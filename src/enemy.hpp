@@ -3,21 +3,23 @@
 
 #include "algebra.hpp"
 #include "mover.hpp"
+#include "scene.hpp"
 #include <string>
 
 class Enemy : public Mover {
-  void init();
-
   std::string number;
   double speed;
   unsigned int digitIndex;
+  double rotation;
+  SceneNode* node;
+  Mover& target;
 
 protected:
   void _update(double delta);
 
 public:
   Enemy();
-  Enemy(Point3D position);
+  Enemy(Point3D position, Mover& target);
   void render();
   bool tryDigit(char num);
   void advanceDigit();

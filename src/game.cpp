@@ -69,14 +69,10 @@ void Game::handleKey(unsigned char key, bool down) {
 // Calls the update methods of each game component
 void Game::update(double delta) {
   player.update(delta);
-  player.debug = false;
 
   // Update enemies
   for (Enemy* enemy : enemies) {
     enemy->update(delta);
-    if (enemy->collidingWith(player)) {
-      player.debug = true;
-    }
   }
 }
 
@@ -85,7 +81,7 @@ void Game::spawnEnemy() {
   double xPosition = cos(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
   double yPosition = sin(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
   Point3D enemyPosition(xPosition, yPosition, 0);
-  Enemy* enemy = new Enemy(enemyPosition);
+  Enemy* enemy = new Enemy(enemyPosition, player);
   enemies.push_back(enemy);
   if (number.length() == 0) {
     targetEnemies.push_back(enemy);

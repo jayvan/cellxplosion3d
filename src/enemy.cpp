@@ -1,5 +1,6 @@
 #include "enemy.hpp"
 #include "constants.hpp"
+#include "scene_lua.hpp"
 #include <iostream>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -10,15 +11,10 @@ char randomDigit() {
   return (rand() % 10) + 48;
 }
 
-Enemy::Enemy(Point3D position) : Mover(position, Vector3D(1, 1, 1)) {
-  init();
-}
+Enemy::Enemy(Point3D position, Mover& target) : Mover(position, Vector3D(1, 1, 1)), target(target) {
+  node = import_lua(CONSTANTS::ENEMY_MODEL_PATH);
+  rotation = 0;
 
-Enemy::Enemy() : Mover(Point3D(), Vector3D(1, 1, 1)) {
-  init();
-}
-
-void Enemy::init() {
   digitIndex = 0;
 
   // Generate the enemies number
@@ -53,49 +49,13 @@ bool Enemy::tryDestroy() {
 }
 
 void Enemy::render() {
-  glColor3f(0.333333, 0.066667, 0.066667);
+  // Model
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
-  glBegin(GL_QUADS);
+  node->walk_gl();
+  glPopMatrix();
 
-  // Front face
-  glVertex3d(0.0, 0.0, 0.0);
-  glVertex3d(1.0, 0.0, 0.0);
-  glVertex3d(1.0, 1.0, 0.0);
-  glVertex3d(0.0, 1.0, 0.0);
-
-  // Back Face
-  glVertex3d(0.0, 0.0, 1.0);
-  glVertex3d(1.0, 0.0, 1.0);
-  glVertex3d(1.0, 1.0, 1.0);
-  glVertex3d(0.0, 1.0, 1.0);
-
-  // Top Face
-  glVertex3d(0.0, 1.0, 0.0);
-  glVertex3d(0.0, 1.0, 1.0);
-  glVertex3d(1.0, 1.0, 1.0);
-  glVertex3d(1.0, 1.0, 0.0);
-
-  // Bottom Face
-  glVertex3d(0.0, 0.0, 0.0);
-  glVertex3d(0.0, 0.0, 1.0);
-  glVertex3d(1.0, 0.0, 1.0);
-  glVertex3d(1.0, 0.0, 0.0);
-
-  // Left Face
-  glVertex3d(0.0, 0.0, 0.0);
-  glVertex3d(0.0, 1.0, 0.0);
-  glVertex3d(0.0, 1.0, 1.0);
-  glVertex3d(0.0, 0.0, 1.0);
-
-  // Right Face
-  glVertex3d(1.0, 0.0, 0.0);
-  glVertex3d(1.0, 1.0, 0.0);
-  glVertex3d(1.0, 1.0, 1.0);
-  glVertex3d(1.0, 0.0, 1.0);
-
-  glEnd();
-
+  // Number
   float green[] = {0.0, 0.392157, 0.0, 1.0};
   float red[] = {0.333333, 0.066667, 0.066667, 1.0};
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, green);
