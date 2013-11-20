@@ -18,6 +18,7 @@ public:
   bool debug;
 
   Player();
+  ~Player();
   void render();
   void setDirection(Direction direction, bool down);
 };

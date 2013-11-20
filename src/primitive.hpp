@@ -8,6 +8,8 @@ class Primitive {
 public:
   virtual ~Primitive();
   virtual void walk_gl() const = 0;
+  virtual Point3D min_vertex() const;
+  virtual Point3D max_vertex() const;
 };
 
 class SphereRenderer {
@@ -57,6 +59,8 @@ public:
   Disk();
   virtual ~Disk();
   virtual void walk_gl() const;
+  virtual Point3D min_vertex() const;
+  virtual Point3D max_vertex() const;
 private:
   static DiskRenderer renderer;
 };
@@ -74,6 +78,8 @@ public:
   Tetrahedron();
   virtual ~Tetrahedron();
   virtual void walk_gl() const;
+  virtual Point3D min_vertex() const;
+  virtual Point3D max_vertex() const;
 private:
   static TetrahedronRenderer renderer;
 };

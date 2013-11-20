@@ -4,6 +4,7 @@
 #include <set>
 #include <map>
 #include <stdexcept>
+#include <values.h>
 
 using namespace std;
 
@@ -17,6 +18,39 @@ SceneNode::SceneNode(const std::string& name)
 
 SceneNode::~SceneNode()
 {
+}
+
+void SceneNode::normalize() {
+  Point3D min(DBL_MAX, DBL_MAX, DBL_MAX);
+  Point3D max(DBL_MIN, DBL_MIN, DBL_MIN);
+  normalize(min, max, Matrix4x4());
+
+  Vector3D dimensions = max - min;
+  Vector3D offset(max[0] - (max[0] - min[0]) / 2,
+                  max[1] - (max[1] - min[1]) / 2,
+                  max[2] - (max[2] - min[2]) / 2);
+
+  double shrinkFactor = dimensions[0];
+  if (dimensions[1] > shrinkFactor) shrinkFactor = dimensions[1];
+
+  shrinkFactor = 1 / shrinkFactor;
+
+  scale(Vector3D(shrinkFactor, shrinkFactor, shrinkFactor));
+}
+
+Vector3D SceneNode::get_size() {
+  Point3D min(DBL_MAX, DBL_MAX, DBL_MAX);
+  Point3D max(DBL_MIN, DBL_MIN, DBL_MIN);
+  normalize(min, max, Matrix4x4());
+
+  return max - min;
+}
+
+void SceneNode::normalize(Point3D& min, Point3D& max, Matrix4x4 transform) {
+  transform = transform * m_trans;
+  for (SceneNode* child : m_children) {
+    child->normalize(min, max, transform);
+  }
 }
 
 void SceneNode::walk_gl() const
@@ -157,3 +191,8 @@ void GeometryNode::walk_gl() const
   glPopMatrix();
 }
 
+void GeometryNode::normalize(Point3D& min, Point3D& max, Matrix4x4 transform) {
+  transform = transform * m_trans;
+  min.floor(transform * m_primitive->min_vertex());
+  max.ceil(transform * m_primitive->max_vertex());
+}

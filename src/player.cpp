@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "constants.hpp"
+#include "scene_lua.hpp"
 
 #include <GL/gl.h>
 #include <iostream>
@@ -11,6 +12,13 @@ Player::Player() : Mover(Point3D(CONSTANTS::AREA_SIZE / 2, CONSTANTS::AREA_SIZE 
   for (unsigned int i = 0; i < 4; i++) {
     moveDirection[i] = false;
   }
+
+  node = import_lua(CONSTANTS::PLAYER_MODEL_PATH);
+  size = node->get_size();
+}
+
+Player::~Player() {
+  delete node;
 }
 
 void Player::setDirection(Direction direction, bool down) {
@@ -49,44 +57,7 @@ void Player::render() {
 
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
-  glBegin(GL_QUADS);
 
-  // Front face
-  glVertex3d(0.0, 0.0, 0.0);
-  glVertex3d(1.0, 0.0, 0.0);
-  glVertex3d(1.0, 1.0, 0.0);
-  glVertex3d(0.0, 1.0, 0.0);
-
-  // Back Face
-  glVertex3d(0.0, 0.0, 1.0);
-  glVertex3d(1.0, 0.0, 1.0);
-  glVertex3d(1.0, 1.0, 1.0);
-  glVertex3d(0.0, 1.0, 1.0);
-
-  // Top Face
-  glVertex3d(0.0, 1.0, 0.0);
-  glVertex3d(0.0, 1.0, 1.0);
-  glVertex3d(1.0, 1.0, 1.0);
-  glVertex3d(1.0, 1.0, 0.0);
-
-  // Bottom Face
-  glVertex3d(0.0, 0.0, 0.0);
-  glVertex3d(0.0, 0.0, 1.0);
-  glVertex3d(1.0, 0.0, 1.0);
-  glVertex3d(1.0, 0.0, 0.0);
-
-  // Left Face
-  glVertex3d(0.0, 0.0, 0.0);
-  glVertex3d(0.0, 1.0, 0.0);
-  glVertex3d(0.0, 1.0, 1.0);
-  glVertex3d(0.0, 0.0, 1.0);
-
-  // Right Face
-  glVertex3d(1.0, 0.0, 0.0);
-  glVertex3d(1.0, 1.0, 0.0);
-  glVertex3d(1.0, 1.0, 1.0);
-  glVertex3d(1.0, 0.0, 1.0);
-
-  glEnd();
+  node->walk_gl();
   glPopMatrix();
 }

@@ -3,6 +3,14 @@
 
 using namespace std;
 
+Point3D Primitive::min_vertex() const {
+  return Point3D(-1, -1, -1);
+}
+
+Point3D Primitive::max_vertex() const {
+  return Point3D(1, 1, 1);
+}
+
 SphereRenderer Sphere::renderer = SphereRenderer();
 CylinderRenderer Cylinder::renderer = CylinderRenderer();
 DiskRenderer Disk::renderer = DiskRenderer();
@@ -90,6 +98,15 @@ void Disk::walk_gl() const
   renderer.render();
 }
 
+Point3D Disk::min_vertex() const {
+  return Point3D(-1, -1, 0.001);
+}
+
+Point3D Disk::max_vertex() const {
+  return Point3D(1, 1, 0.001);
+}
+
+
 DiskRenderer::DiskRenderer() {
 }
 
@@ -120,6 +137,14 @@ Tetrahedron::~Tetrahedron()
 void Tetrahedron::walk_gl() const
 {
   renderer.render();
+}
+
+Point3D Tetrahedron::min_vertex() const {
+  return Point3D(-1, -1, 1 / sqrt(2));
+}
+
+Point3D Tetrahedron::max_vertex() const {
+  return Point3D(1, 1, 1 / sqrt(2));
 }
 
 TetrahedronRenderer::TetrahedronRenderer() {

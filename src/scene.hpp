@@ -13,15 +13,14 @@ public:
   SceneNode(const std::string& name);
   virtual ~SceneNode();
 
-  // State
-  struct JointAngles {
-    double x, y;
-  };
-
   virtual void walk_gl() const;
 
   const Matrix4x4& get_transform() const { return m_trans; }
   const Matrix4x4& get_inverse() const { return m_invtrans; }
+
+  void normalize();
+  virtual void normalize(Point3D& min, Point3D& max, Matrix4x4 transform);
+  Vector3D get_size();
 
   void set_transform(const Matrix4x4& m)
   {
@@ -100,6 +99,7 @@ public:
   virtual ~GeometryNode();
 
   virtual void walk_gl() const;
+  virtual void normalize(Point3D& min, Point3D& max, Matrix4x4 transform);
 
   const Material* get_material() const;
   Material* get_material();

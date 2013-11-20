@@ -1,42 +1,32 @@
-INCLUDES = \
-    -I. \
-    -I/usr/include/SDL
-
-
-LIBS = \
-	-lGL -lGLU -lglut -lSDL -lSDL_mixer
-
-GPPFLAGS = \
-    $(INCLUDES) \
-    -std=c++0x
-
-ICCFLAGS = \
-    $(INCLUDES)
-
-
-CPP = g++ $(GPPFLAGS)
-#CPP = g++ $(IPPFLAGS)
-
-all: cellxplosion
-
-
-.cpp.o:
-	$(CPP) -g -c -o $@ $<
-.c.o:
-	$(CC) -g -c -o $@ $<
-
 SOURCES = $(wildcard *.cpp)
-OBJS = $(SOURCES:.cpp=.o)
+OBJECTS = $(SOURCES:.cpp=.o)
+DEPENDS = $(SOURCES:.cpp=.d)
+INCLUDES = -I. -I/usr/include/SDL
+LDFLAGS = $(INCLUDES) $(shell pkg-config --libs lua5.1) -llua5.1 -lGL -lGLU -lglut -lSDL -lSDL_mixer
+CPPFLAGS = $(INCLUDES) $(shell pkg-config --cflags lua5.1) -std=c++0x
+CXXFLAGS = $(CPPFLAGS) -W -Wall -g -std=c++0x
+CXX = g++
+MAIN = cellxplosion
 
-compileobjs: $(OBJS)
+all: $(MAIN)
 
-cellxplosion: $(OBJS) Makefile
-	$(CPP) -o cellxplosion $(OBJS) $(LIBS)
-
-lib_tutorial: $(OBJS) Makefile
-	ar rvs libsm $(OBJS)
-	mv libsm libsm.a
-
+depend: $(DEPENDS)
 
 clean:
-	-rm *.o cellxplosion
+	rm -f *.o *.d $(MAIN)
+
+$(MAIN): $(OBJECTS)
+	@echo Creating $@...
+	@$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
+
+%.o: %.cpp
+	@echo Compiling $<...
+	@$(CXX) -o $@ -c $(CXXFLAGS) $<
+
+%.d: %.cpp
+	@echo Building $@...
+	@set -e; $(CC) -M $(CPPFLAGS) $< \
+                  | sed 's/\($*\)\.o[ :]*/\1.o $@ : /g' > $@; \
+                [ -s $@ ] || rm -f $@
+
+include $(DEPENDS)

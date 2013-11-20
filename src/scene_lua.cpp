@@ -462,6 +462,7 @@ SceneNode* import_lua(const std::string& filename)
 
   // Close the interpreter, free up any resources not needed
   lua_close(L);
+  node->normalize();
 
   // And return the node
   return node;

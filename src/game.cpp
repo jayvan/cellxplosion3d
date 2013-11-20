@@ -153,6 +153,7 @@ void Game::render() {
 
   Point3D playerPosition = player.getPosition();
   glTranslated(-playerPosition[0], -playerPosition[1], -25.0);
+  glRotated(-20, 1.0, 0, 0);
 
   // Draw enemies
   for (Enemy* enemy : enemies) {
