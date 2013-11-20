@@ -20,7 +20,8 @@ void Player::setDirection(Direction direction, bool down) {
   // We don't do this relative to just the current key event because we may miss an event
   // e.g. we don't 'hear' the keyUp, so the next keyDown doubles the player speed
 
-  double yVelocity, xVelocity = 0;
+  double yVelocity = 0;
+  double xVelocity = 0;
 
   if (moveDirection[UP])
     yVelocity++;
@@ -37,6 +38,7 @@ void Player::setDirection(Direction direction, bool down) {
 }
 
 void Player::_update(double delta) {
+  (void)delta;
 }
 
 void Player::render() {

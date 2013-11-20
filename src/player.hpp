@@ -3,10 +3,12 @@
 
 #include "algebra.hpp"
 #include "mover.hpp"
+#include "scene.hpp"
 
 class Player : public Mover {
   static constexpr double PLAYER_SPEED = 10.0;
   bool moveDirection[4];
+  SceneNode* node;
 
 protected:
   void _update(double delta);

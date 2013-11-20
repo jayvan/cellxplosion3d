@@ -32,6 +32,7 @@ void Enemy::init() {
 // Move closer to player
 // Animate limbs and particle system
 void Enemy::_update(double delta) {
+  (void)delta;
 
 }
 

@@ -6,7 +6,8 @@ Wall::Wall(Point3D position, Vector3D size) : Mover(position, size) {
 }
 
 void Wall::_update(double delta) {
-  // Wall's dont move.
+  // Wall's are static!
+  (void)delta;
 }
 
 
