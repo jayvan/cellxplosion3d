@@ -1,7 +1,6 @@
 rootnode = gr.node('root')
 rootnode:rotate('x', 90)
 rootnode:rotate('y', 90)
-rootnode:translate(0.45, 2.0, 0)
 
 red = gr.material({1.0, 0.0, 0.0}, {0.1, 0.1, 0.1}, 10)
 blue = gr.material({0.27451, 0.509804, 0.705882}, {0.27451, 0.509804, 0.705882}, 10)

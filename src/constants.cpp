@@ -2,7 +2,7 @@
 #include "math.h"
 
 // Game World
-const double CONSTANTS::AREA_SIZE        =   25.0;
+const double CONSTANTS::AREA_SIZE        =   15.0;
 const double CONSTANTS::CAMERA_ANGLE     =   20.0;
 const double CONSTANTS::CAMERA_ANGLE_RAD =   CONSTANTS::CAMERA_ANGLE * M_PI / 180.0;
 const double CONSTANTS::CAMERA_DISTANCE  =   20.0;
@@ -10,10 +10,11 @@ const double CONSTANTS::WALL_HEIGHT      =   3.0;
 const double CONSTANTS::WALL_THICKNESS   =   2.0;
 
 // Player
+const double CONSTANTS::PLAYER_SPEED = 6.0;
 const double CONSTANTS::ROTATION_SPEED = 720.0;
 
 // Enemy
-const unsigned int  CONSTANTS::INITIAL_ENEMIES  =   10;
+const unsigned int  CONSTANTS::INITIAL_ENEMIES  =   5;
 const unsigned int  CONSTANTS::NUMBER_LENGTH    =   5;
 
 // Data

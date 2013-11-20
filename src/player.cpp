@@ -14,7 +14,7 @@ Player::Player() : Mover(Point3D(CONSTANTS::AREA_SIZE / 2, CONSTANTS::AREA_SIZE 
   }
 
   node = import_lua(CONSTANTS::PLAYER_MODEL_PATH);
-  size = node->get_size();
+  cout << "Player Size: " << size << endl;
   rotation = 0;
   desiredRotation = 0;
 }
@@ -44,7 +44,7 @@ void Player::setDirection(Direction direction, bool down) {
 
   velocity = Vector3D(xVelocity, yVelocity, 0);
   velocity.normalize();
-  velocity = PLAYER_SPEED * velocity;
+  velocity = CONSTANTS::PLAYER_SPEED * velocity;
 
   if (velocity.length2() == 0) {
     return;

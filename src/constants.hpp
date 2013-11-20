@@ -10,6 +10,7 @@ struct CONSTANTS {
   static const double WALL_THICKNESS;
 
   // Player
+  static const double PLAYER_SPEED;
   static const double ROTATION_SPEED;
 
   // Enemy

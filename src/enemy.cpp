@@ -29,6 +29,7 @@ Enemy::Enemy(Point3D position, Mover& target) : Mover(position, Vector3D(1, 1, 1
 // Move closer to player
 // Animate limbs and particle system
 void Enemy::_update(double delta) {
+  (void)delta;
   // Look at player
   Vector3D toPlayer = target.getPosition() - position;
   double newRotation = atan2(toPlayer[1], toPlayer[0]);

@@ -35,6 +35,7 @@ void SceneNode::normalize() {
 
   shrinkFactor = 1 / shrinkFactor;
 
+  translate(Vector3D(0.5, 0.0, 0.5));
   scale(Vector3D(shrinkFactor, shrinkFactor, shrinkFactor));
 }
 
