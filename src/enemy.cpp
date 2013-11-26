@@ -133,11 +133,13 @@ Enemy::Limb::Limb(SceneNode* node, Point3D position, Vector3D vel) : Mover(posit
 
 void Enemy::Limb::_update(double delta) {
   (void)delta;
+  rotation += 1.0;
 }
 
 void Enemy::Limb::render() {
   glPushMatrix();
   glTranslated(position[0], position[1], position[2]);
+  glRotated(rotation, 0, 0, 1);
   node->walk_gl();
   glPopMatrix();
 }

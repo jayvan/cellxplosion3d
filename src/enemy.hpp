@@ -9,7 +9,6 @@
 class Enemy : public Mover {
   class Limb : public Mover {
     SceneNode* node;
-    Vector3D rotationAxis;
     double rotation;
 
   public:

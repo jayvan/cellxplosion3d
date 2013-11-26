@@ -76,7 +76,6 @@ void Game::update(double delta) {
     Enemy* enemy = *it;
     if (enemy->isGone()) {
       it = enemies.erase(it);
-      cout << "Removed enemy" << endl;
     } else {
       enemy->update(delta);
       it++;
