@@ -36,3 +36,12 @@ bool Mover::collidingWith(Mover &other) {
            top() < other.bottom() ||
            bottom() > other.top());
 }
+
+void Mover::rebound(Mover &other) {
+  if (!collidingWith(other)) return;
+
+  // Adjust left/right
+  Vector3D pushDir = center() - other.center();
+  pushDir.normalize();
+  position = other.position + pushDir;
+}

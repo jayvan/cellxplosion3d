@@ -85,6 +85,7 @@ bool Enemy::tryDestroy() {
       limbs.push_back(new Limb(limb_node, position, velocity));
     }
     velocity = Vector3D();
+    position = Point3D() + CONSTANTS::AREA_SIZE * 2 * Vector3D();
   }
 
   return destroyed;

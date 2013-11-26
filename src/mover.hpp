@@ -19,6 +19,7 @@ public:
   Mover(Point3D position, Vector3D size);
   void update(double delta);
   bool collidingWith(Mover &other);
+  void rebound(Mover &other);
 
   Point3D getPosition();
 
@@ -45,6 +46,10 @@ public:
 
   inline double back() {
     return position[2] + size[2];
+  }
+
+  inline Point3D center() {
+    return position + 0.5 * size;
   }
 };
 

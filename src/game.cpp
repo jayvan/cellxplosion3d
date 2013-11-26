@@ -78,6 +78,11 @@ void Game::update(double delta) {
       it = enemies.erase(it);
     } else {
       enemy->update(delta);
+      list<Enemy*>::iterator other = enemies.begin();
+      while (other != it) {
+        enemy->rebound(**other);
+        other++;
+      }
       it++;
     }
   }
