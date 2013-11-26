@@ -44,6 +44,12 @@ public:
     m_children.remove(child);
   }
 
+  // Hierarchy
+  typedef std::list<SceneNode*> ChildList;
+
+  ChildList explode();
+  virtual void explode(ChildList& nodes, Matrix4x4 trans);
+
   // These will be called from Lua.
   void rotate(char axis, double angle);
   void scale(const Vector3D& amount);
@@ -64,8 +70,6 @@ protected:
   Matrix4x4 m_trans;
   Matrix4x4 m_invtrans;
 
-  // Hierarchy
-  typedef std::list<SceneNode*> ChildList;
   ChildList m_children;
 };
 
@@ -100,6 +104,7 @@ public:
 
   virtual void walk_gl() const;
   virtual void normalize(Point3D& min, Point3D& max, Matrix4x4 transform);
+  virtual void explode(ChildList& nodes, Matrix4x4 trans);
 
   const Material* get_material() const;
   Material* get_material();

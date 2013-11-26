@@ -39,6 +39,19 @@ void SceneNode::normalize() {
   scale(Vector3D(shrinkFactor, shrinkFactor, shrinkFactor));
 }
 
+SceneNode::ChildList SceneNode::explode() {
+  ChildList leaves;
+  explode(leaves, Matrix4x4());
+  return leaves;
+}
+
+void SceneNode::explode(ChildList& nodes, Matrix4x4 trans) {
+  trans = trans * m_trans;
+  for (SceneNode* child : m_children) {
+    child->explode(nodes, trans);
+  }
+}
+
 Vector3D SceneNode::get_size() {
   Point3D min(DBL_MAX, DBL_MAX, DBL_MAX);
   Point3D max(DBL_MIN, DBL_MIN, DBL_MIN);
@@ -176,8 +189,6 @@ GeometryNode::GeometryNode(const std::string& name, Primitive* primitive)
 
 GeometryNode::~GeometryNode()
 {
-  delete m_primitive;
-  delete m_material;
 }
 
 void GeometryNode::walk_gl() const
@@ -196,4 +207,9 @@ void GeometryNode::normalize(Point3D& min, Point3D& max, Matrix4x4 transform) {
   transform = transform * m_trans;
   min.floor(transform * m_primitive->min_vertex());
   max.ceil(transform * m_primitive->max_vertex());
+}
+
+void GeometryNode::explode(ChildList& nodes, Matrix4x4 trans) {
+  m_trans = m_trans * trans;
+  nodes.push_back(this);
 }

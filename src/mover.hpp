@@ -12,6 +12,7 @@ protected:
   Point3D position;
   Vector3D size;
   Vector3D velocity;
+  Vector3D acceleration;
   virtual void _update(double delta) = 0;
 
 public:
@@ -36,6 +37,14 @@ public:
 
   inline double top() {
     return position[1] + size[1];
+  }
+
+  inline double front() {
+    return position[2];
+  }
+
+  inline double back() {
+    return position[2] + size[2];
   }
 };
 

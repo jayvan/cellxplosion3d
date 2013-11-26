@@ -71,8 +71,16 @@ void Game::update(double delta) {
   player.update(delta);
 
   // Update enemies
-  for (Enemy* enemy : enemies) {
-    enemy->update(delta);
+  list<Enemy*>::iterator it = enemies.begin();
+  while (it != enemies.end()) {
+    Enemy* enemy = *it;
+    if (enemy->isGone()) {
+      it = enemies.erase(it);
+      cout << "Removed enemy" << endl;
+    } else {
+      enemy->update(delta);
+      it++;
+    }
   }
 }
 
@@ -128,8 +136,6 @@ void Game::submitNumber() {
     bool destroyed = (*it)->tryDestroy();
 
     if (destroyed) {
-      delete *it;
-      it = enemies.erase(it);
       spawnEnemy();
       spawnEnemy();
     } else {

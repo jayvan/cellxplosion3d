@@ -9,6 +9,7 @@ Mover::Mover(Point3D position, Vector3D size) :
 
 void Mover::update(double delta) {
   _update(delta);
+  velocity = velocity + delta * acceleration;
   position = position + delta * velocity;
 
   // Bounds check
@@ -20,6 +21,8 @@ void Mover::update(double delta) {
     position[1] = 0;
   if (top() > CONSTANTS::AREA_SIZE)
     position[1] = CONSTANTS::AREA_SIZE - size[1];
+  if (front() < 0)
+    position[2] = 0;
 }
 
 Point3D Mover::getPosition() {

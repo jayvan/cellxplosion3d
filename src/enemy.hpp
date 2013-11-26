@@ -7,12 +7,29 @@
 #include <string>
 
 class Enemy : public Mover {
+  class Limb : public Mover {
+    SceneNode* node;
+    Vector3D rotationAxis;
+    double rotation;
+
+  public:
+    Limb(SceneNode* node, Point3D position, Vector3D vel);
+    void render();
+
+
+  protected:
+    void _update(double delta);
+  };
+
   std::string number;
   double speed;
   unsigned int digitIndex;
   double rotation;
+  double timeLeft;
+  bool destroyed;
   SceneNode* node;
   Mover& target;
+  std::list<Limb*> limbs;
 
 protected:
   void _update(double delta);
@@ -20,11 +37,13 @@ protected:
 public:
   Enemy();
   Enemy(Point3D position, Mover& target);
+  ~Enemy();
   void render();
   bool tryDigit(char num);
   void advanceDigit();
   void resetDigit();
   bool tryDestroy();
+  bool isGone();
 };
 
 #endif

@@ -16,6 +16,8 @@ const double CONSTANTS::ROTATION_SPEED = 720.0;
 // Enemy
 const unsigned int  CONSTANTS::INITIAL_ENEMIES  =   5;
 const unsigned int  CONSTANTS::NUMBER_LENGTH    =   5;
+const double        CONSTANTS::LIMB_TTL         =   3.0;
+const double        CONSTANTS::LIMB_VELOCITY    =   6.0;
 
 // Data
 const std::string CONSTANTS::DATA_PATH = "../data/";

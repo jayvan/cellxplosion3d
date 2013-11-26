@@ -16,6 +16,8 @@ struct CONSTANTS {
   // Enemy
   static const unsigned int INITIAL_ENEMIES;
   static const unsigned int NUMBER_LENGTH;
+  static const double LIMB_TTL;
+  static const double LIMB_VELOCITY;
 
   // Data
   static const std::string DATA_PATH;

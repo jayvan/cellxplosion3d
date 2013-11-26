@@ -45,7 +45,7 @@ void SphereRenderer::render() {
 
     list = glGenLists(1);
     glNewList(list, GL_COMPILE);
-      gluSphere(quadric, 1.0, 100, 100);
+      gluSphere(quadric, 1.0, 10, 10);
     glEndList();
   }
 
