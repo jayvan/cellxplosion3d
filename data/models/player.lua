@@ -7,12 +7,14 @@ blue = gr.material({0.27451, 0.509804, 0.705882}, {0.27451, 0.509804, 0.705882},
 green = gr.material({0.0, 1.0, 0.0}, {0.1, 0.1, 0.1}, 10)
 white = gr.material({1.0, 1.0, 1.0}, {0.1, 0.1, 0.1}, 10)
 grey = gr.material({0.3, 0.3, 0.3}, {0.3, 0.3, 0.3}, 10)
+black = gr.material({0.2, 0.2, 0.2}, {0.2, 0.2, 0.2}, 10)
 pink = gr.material({1.0, 0.752941, 0.796078}, {1.0, 0.752941, 0.796078}, 10)
 yellow = gr.material({1.0, 1.0, 0.0}, {0.1, 0.1, 0.1}, 25)
+black_cloth = gr.texture("../data/textures/temp.jpg", grey)
 
 torso = gr.cylinder('torso')
 rootnode:add_child(torso)
-torso:set_material(grey)
+torso:set_material(black_cloth)
 torso:scale(1.2, 3.0, 0.5);
 torso:translate(0.0, 0.5, 0.0)
 torso:rotate('x', 90);
@@ -30,16 +32,16 @@ shoulders:translate(0.0, 1.5, 0.0)
 
 upper_torso = gr.sphere('upper_torso')
 shoulders:add_child(upper_torso)
-upper_torso:set_material(grey)
+upper_torso:set_material(black_cloth)
 upper_torso:scale(1.5, 0.3, 0.50);
 
 torso_cap = gr.disk('torso_cap')
 torso:add_child(torso_cap)
-torso_cap:set_material(grey)
+torso_cap:set_material(black_cloth)
 
 torso_floor = gr.disk('torso_floor')
 torso:add_child(torso_floor)
-torso_floor:set_material(grey)
+torso_floor:set_material(black_cloth)
 torso_floor:translate(0.0, 0.0, 1.0)
 
 -- HEAD STARTS HERE
@@ -93,7 +95,7 @@ shoulders:add_child(rightShoulder)
 
 rightarm = gr.sphere('rightarm')
 rightShoulder:add_child(rightarm)
-rightarm:set_material(grey)
+rightarm:set_material(black_cloth)
 rightarm:translate(0.0, -0.8, 0.0)
 rightarm:scale(0.35, 1.0, 0.35)
 
@@ -124,7 +126,7 @@ shoulders:add_child(leftShoulder)
 
 leftarm = gr.sphere('leftarm')
 leftShoulder:add_child(leftarm)
-leftarm:set_material(grey)
+leftarm:set_material(black_cloth)
 leftarm:translate(0.0, -0.8, 0.0)
 leftarm:scale(0.35, 1.0, 0.35)
 
@@ -156,7 +158,7 @@ hip_joint:translate(0.0, -1.5, 0.0)
 
 hips= gr.sphere('hips')
 hip_joint:add_child(hips)
-hips:set_material(grey)
+hips:set_material(black_cloth)
 hips:scale(1.5, 0.3, 0.50);
 
 righthip = gr.joint('righthip', {-85.0, 0.0, 45.0}, {0.0, 0.0, 0.0})
@@ -165,7 +167,7 @@ hip_joint:add_child(righthip)
 
 rightThigh = gr.sphere('rightThigh')
 righthip:add_child(rightThigh)
-rightThigh:set_material(grey)
+rightThigh:set_material(black_cloth)
 rightThigh:translate(0.0, -0.8, 0.0)
 rightThigh:scale(0.55, 1.0, 0.55)
 
@@ -195,7 +197,7 @@ hip_joint:add_child(lefthip)
 
 leftThigh = gr.sphere('leftThigh')
 lefthip:add_child(leftThigh)
-leftThigh:set_material(grey)
+leftThigh:set_material(black_cloth)
 leftThigh:translate(0.0, -0.8, 0.0)
 leftThigh:scale(0.55, 1.0, 0.55)
 

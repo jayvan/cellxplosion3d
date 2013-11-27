@@ -42,6 +42,7 @@ void SphereRenderer::render() {
     GLUquadric *quadric = gluNewQuadric();
     gluQuadricDrawStyle(quadric, GLU_FILL);
     gluQuadricNormals(quadric, GLU_SMOOTH);
+    gluQuadricTexture(quadric, GLU_TRUE);
 
     list = glGenLists(1);
     glNewList(list, GL_COMPILE);
@@ -74,6 +75,7 @@ void CylinderRenderer::render() {
     GLUquadric *quadric = gluNewQuadric();
     gluQuadricDrawStyle(quadric, GLU_FILL);
     gluQuadricNormals(quadric, GLU_SMOOTH);
+    gluQuadricTexture(quadric, GLU_TRUE);
 
     list = glGenLists(1);
     glNewList(list, GL_COMPILE);
@@ -116,6 +118,7 @@ void DiskRenderer::render() {
     GLUquadric *quadric = gluNewQuadric();
     gluQuadricDrawStyle(quadric, GLU_FILL);
     gluQuadricNormals(quadric, GLU_SMOOTH);
+    gluQuadricTexture(quadric, GLU_TRUE);
 
     list = glGenLists(1);
     glNewList(list, GL_COMPILE);
@@ -156,6 +159,7 @@ void TetrahedronRenderer::render() {
     GLUquadric *quadric = gluNewQuadric();
     gluQuadricDrawStyle(quadric, GLU_FILL);
     gluQuadricNormals(quadric, GLU_SMOOTH);
+    gluQuadricTexture(quadric, GLU_TRUE);
 
     list = glGenLists(1);
     glNewList(list, GL_COMPILE);

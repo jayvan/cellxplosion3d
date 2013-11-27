@@ -18,6 +18,8 @@ struct CONSTANTS {
   static const unsigned int NUMBER_LENGTH;
   static const double LIMB_TTL;
   static const double LIMB_VELOCITY;
+  static const double ENEMY_SPEED_PROBABILITY[];
+  static const double ENEMY_SPEEDS[];
 
   // Data
   static const std::string DATA_PATH;

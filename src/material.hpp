@@ -3,10 +3,14 @@
 
 #include "algebra.hpp"
 
+#include <GL/gl.h>
+
 class Material {
 public:
   virtual ~Material();
   virtual void apply_gl() const = 0;
+  virtual bool is_texture() const;
+  virtual void set_color(Material* newColor) {(void)newColor;}
 
 protected:
   Material()
@@ -26,6 +30,21 @@ private:
   Colour m_ks;
 
   double m_shininess;
+};
+
+class TextureMaterial : public Material {
+public:
+  TextureMaterial(const char* filename, Material* color);
+  virtual ~TextureMaterial();
+  virtual bool is_texture() const;
+  virtual void set_color(Material* newColor);
+
+  virtual void apply_gl() const;
+
+private:
+  GLuint texture;
+  Material* color;
+
 };
 
 

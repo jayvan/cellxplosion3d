@@ -48,7 +48,7 @@ public:
   typedef std::list<SceneNode*> ChildList;
 
   ChildList explode();
-  virtual void explode(ChildList& nodes, Matrix4x4 trans);
+  virtual void set_texture_color(Material * new_color);
 
   // These will be called from Lua.
   void rotate(char axis, double angle);
@@ -71,6 +71,8 @@ protected:
   Matrix4x4 m_invtrans;
 
   ChildList m_children;
+
+  virtual void explode(ChildList& nodes, Matrix4x4 trans);
 };
 
 class JointNode : public SceneNode {
@@ -104,11 +106,11 @@ public:
 
   virtual void walk_gl() const;
   virtual void normalize(Point3D& min, Point3D& max, Matrix4x4 transform);
-  virtual void explode(ChildList& nodes, Matrix4x4 trans);
 
   const Material* get_material() const;
   Material* get_material();
 
+  virtual void set_texture_color(Material * new_color);
   void set_material(Material* material)
   {
     m_material = material;
@@ -117,6 +119,8 @@ public:
 protected:
   Material* m_material;
   Primitive* m_primitive;
+
+  virtual void explode(ChildList& nodes, Matrix4x4 trans);
 };
 
 #endif

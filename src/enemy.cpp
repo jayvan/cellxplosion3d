@@ -14,6 +14,10 @@ char randomDigit() {
 
 Enemy::Enemy(Point3D position, Mover& target) : Mover(position, Vector3D(1, 1, 1)), target(target) {
   node = import_lua(CONSTANTS::ENEMY_MODEL_PATH);
+  Colour color(rand() % 255 / 255.0, rand() % 255 / 255.0, rand() % 255 / 255.0);
+  PhongMaterial* material = new PhongMaterial(color, color, 10.0);
+
+  node->set_texture_color(material);
   rotation = 0;
   digitIndex = 0;
   timeLeft = CONSTANTS::LIMB_TTL;

@@ -60,6 +60,12 @@ Vector3D SceneNode::get_size() {
   return max - min;
 }
 
+void SceneNode::set_texture_color(Material * new_color) {
+  for (SceneNode* child : m_children) {
+    child->set_texture_color(new_color);
+  }
+}
+
 void SceneNode::normalize(Point3D& min, Point3D& max, Matrix4x4 transform) {
   transform = transform * m_trans;
   for (SceneNode* child : m_children) {
@@ -189,6 +195,12 @@ GeometryNode::GeometryNode(const std::string& name, Primitive* primitive)
 
 GeometryNode::~GeometryNode()
 {
+}
+
+void GeometryNode::set_texture_color(Material* new_color) {
+  if (m_material->is_texture()) {
+    m_material->set_color(new_color);
+  }
 }
 
 void GeometryNode::walk_gl() const

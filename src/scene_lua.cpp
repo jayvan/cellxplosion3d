@@ -240,6 +240,28 @@ int gr_material_cmd(lua_State* L)
   return 1;
 }
 
+// Create a texture
+extern "C"
+int gr_texture_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+
+  gr_material_ud* data = (gr_material_ud*)lua_newuserdata(L, sizeof(gr_material_ud));
+  data->material = 0;
+
+  const char* filename = luaL_checkstring(L, 1);
+
+  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 2, "gr.material");
+  luaL_argcheck(L, matdata != 0, 2, "Material expected");
+
+  data->material = new TextureMaterial(filename, matdata->material);
+
+  luaL_newmetatable(L, "gr.material");
+  lua_setmetatable(L, -2);
+
+  return 1;
+}
+
 // Add a child to a node
 extern "C"
 int gr_node_add_child_cmd(lua_State* L)
@@ -386,6 +408,7 @@ static const luaL_reg grlib_functions[] = {
   {"disk", gr_disk_cmd},
   {"tetrahedron", gr_tetrahedron_cmd},
   {"material", gr_material_cmd},
+  {"texture", gr_texture_cmd},
   {0, 0}
 };
 
