@@ -12,7 +12,7 @@ char randomDigit() {
   return (rand() % 10) + 48;
 }
 
-Enemy::Enemy(Point3D position, Mover& target) : Mover(position, Vector3D(1, 1, 1)), target(target) {
+Enemy::Enemy(Point3D position, Mover& target, double speedBoost, unsigned int numberBoost) : Mover(position, Vector3D(1, 1, 1)), target(target) {
   node = import_lua(CONSTANTS::ENEMY_MODEL_PATH);
   Colour color(rand() % 255 / 255.0, rand() % 255 / 255.0, rand() % 255 / 255.0);
   PhongMaterial* material = new PhongMaterial(color, color, 10.0);
@@ -24,11 +24,13 @@ Enemy::Enemy(Point3D position, Mover& target) : Mover(position, Vector3D(1, 1, 1
   destroyed = false;
 
   // Generate the enemies number
-  for (unsigned int i = 0; i < CONSTANTS::NUMBER_LENGTH; i++) {
+  unsigned int numberLength = sample(CONSTANTS::ENEMY_DIFFICULTY_PROBABILITY, CONSTANTS::ENEMY_DIFFICULTIES) + numberBoost;
+  for (unsigned int i = 0; i < numberLength; i++) {
     number.push_back(randomDigit());
   }
 
-  speed = 1.0;
+  speed = sample(CONSTANTS::ENEMY_SPEED_PROBABILITY, CONSTANTS::ENEMY_SPEEDS);
+  speed += speedBoost;
 }
 
 Enemy::~Enemy() {

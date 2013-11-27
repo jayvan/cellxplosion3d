@@ -35,7 +35,7 @@ protected:
 
 public:
   Enemy();
-  Enemy(Point3D position, Mover& target);
+  Enemy(Point3D position, Mover& target, double speedBoost, unsigned int numberBoost);
   ~Enemy();
   void render();
   bool tryDigit(char num);

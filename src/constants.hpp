@@ -15,11 +15,14 @@ struct CONSTANTS {
 
   // Enemy
   static const unsigned int INITIAL_ENEMIES;
+  static const unsigned int FORK_CHANCE;
   static const unsigned int NUMBER_LENGTH;
   static const double LIMB_TTL;
   static const double LIMB_VELOCITY;
-  static const double ENEMY_SPEED_PROBABILITY[];
+  static const unsigned int ENEMY_SPEED_PROBABILITY[];
   static const double ENEMY_SPEEDS[];
+  static const unsigned int ENEMY_DIFFICULTY_PROBABILITY[];
+  static const double ENEMY_DIFFICULTIES[];
 
   // Data
   static const std::string DATA_PATH;
@@ -34,3 +37,5 @@ struct CONSTANTS {
   static const std::string BACKGROUND_MUSIC;
   static const std::string DEATH_MUSIC;
 };
+
+double sample(const unsigned int probability[], const double values[]);

@@ -13,6 +13,10 @@ class Game {
   std::list<Wall> walls;
   std::string number;
   Player player;
+  double enemySpeedBoost;
+  unsigned int enemyNumberBoost;
+  unsigned int enemiesDefeated;
+  unsigned int score;
 
   void dial(char num);
   void submitNumber();

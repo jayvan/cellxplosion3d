@@ -93,7 +93,7 @@ void Game::spawnEnemy() {
   double xPosition = cos(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
   double yPosition = sin(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
   Point3D enemyPosition(xPosition, yPosition, 0);
-  Enemy* enemy = new Enemy(enemyPosition, player);
+  Enemy* enemy = new Enemy(enemyPosition, player, enemySpeedBoost, enemyNumberBoost);
   enemies.push_back(enemy);
   if (number.length() == 0) {
     targetEnemies.push_back(enemy);
@@ -140,8 +140,20 @@ void Game::submitNumber() {
     bool destroyed = (*it)->tryDestroy();
 
     if (destroyed) {
+      score += 100;
+      enemiesDefeated++;
+      if (enemiesDefeated % 10 == 0) {
+        enemySpeedBoost += 0.1;
+      }
+      if (enemiesDefeated % 25 == 0) {
+        enemyNumberBoost++;
+      }
+
       spawnEnemy();
-      spawnEnemy();
+
+      if ((unsigned int)rand() % 100 < CONSTANTS::FORK_CHANCE) {
+        spawnEnemy();
+      }
     } else {
       (*it)->resetDigit();
       it++;
