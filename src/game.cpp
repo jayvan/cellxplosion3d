@@ -89,10 +89,15 @@ void Game::update(double delta) {
 }
 
 void Game::spawnEnemy() {
-  double degree = (2.0 * M_PI) * (double)(rand() % 1000) / 1000;
-  double xPosition = cos(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
-  double yPosition = sin(degree) * CONSTANTS::AREA_SIZE / 3 + CONSTANTS::AREA_SIZE / 2;
-  Point3D enemyPosition(xPosition, yPosition, 0);
+  Point3D enemyPosition = player.getPosition();
+
+  while((enemyPosition - player.getPosition()).length() < CONSTANTS::PLAYER_SPEED * 2) {
+    double degree = (2.0 * M_PI) * (double)(rand() % 1000) / 1000;
+    double xPosition = cos(degree) * CONSTANTS::AREA_SIZE / 2 + CONSTANTS::AREA_SIZE / 2;
+    double yPosition = sin(degree) * CONSTANTS::AREA_SIZE / 2 + CONSTANTS::AREA_SIZE / 2;
+    enemyPosition = Point3D(xPosition, yPosition, 0);
+  }
+
   Enemy* enemy = new Enemy(enemyPosition, player, enemySpeedBoost, enemyNumberBoost);
   enemies.push_back(enemy);
   if (number.length() == 0) {

@@ -2,7 +2,7 @@
 #include "math.h"
 
 // Game World
-const double CONSTANTS::AREA_SIZE        =   20.0;
+const double CONSTANTS::AREA_SIZE        =   25.0;
 const double CONSTANTS::CAMERA_ANGLE     =   20.0;
 const double CONSTANTS::CAMERA_ANGLE_RAD =   CONSTANTS::CAMERA_ANGLE * M_PI / 180.0;
 const double CONSTANTS::CAMERA_DISTANCE  =   20.0;
