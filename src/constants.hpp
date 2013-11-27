@@ -23,6 +23,7 @@ struct CONSTANTS {
   static const double ENEMY_SPEEDS[];
   static const unsigned int ENEMY_DIFFICULTY_PROBABILITY[];
   static const double ENEMY_DIFFICULTIES[];
+  static const unsigned int EXPLOSION_PARTICLES;
 
   // Data
   static const std::string DATA_PATH;

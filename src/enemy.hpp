@@ -4,6 +4,7 @@
 #include "algebra.hpp"
 #include "mover.hpp"
 #include "scene.hpp"
+#include "explosion.hpp"
 #include <string>
 
 class Enemy : public Mover {
@@ -29,6 +30,7 @@ class Enemy : public Mover {
   SceneNode* node;
   Mover& target;
   std::list<Limb*> limbs;
+  Explosion explosion;
 
 protected:
   void _update(double delta);

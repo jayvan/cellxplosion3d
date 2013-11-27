@@ -148,7 +148,7 @@ void Game::submitNumber() {
       score += 100;
       enemiesDefeated++;
       if (enemiesDefeated % 10 == 0) {
-        enemySpeedBoost += 0.1;
+        enemySpeedBoost += 0.25;
       }
       if (enemiesDefeated % 25 == 0) {
         enemyNumberBoost++;

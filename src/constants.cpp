@@ -23,6 +23,7 @@ const unsigned int  CONSTANTS::ENEMY_SPEED_PROBABILITY[] = {1, 1, 5, 14, 79};
 const double        CONSTANTS::ENEMY_SPEEDS[] = {4.5, 4.0, 3.0, 2.0, 1.0};
 const unsigned int  CONSTANTS::ENEMY_DIFFICULTY_PROBABILITY[] = {1, 5, 10, 14, 70};
 const double        CONSTANTS::ENEMY_DIFFICULTIES[] = {7, 6, 5, 4, 3};
+const unsigned int  CONSTANTS::EXPLOSION_PARTICLES = 100;
 
 // Data
 const std::string CONSTANTS::DATA_PATH = "../data/";

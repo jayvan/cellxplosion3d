@@ -42,6 +42,7 @@ void Enemy::_update(double delta) {
   if (timeLeft < 0) return;
 
   if (destroyed) {
+    explosion.update(delta);
     for (Limb* limb : limbs) {
       limb->update(delta);
     }
@@ -90,6 +91,7 @@ bool Enemy::tryDestroy() {
     for (SceneNode* limb_node : limbNodes) {
       limbs.push_back(new Limb(limb_node, position, velocity));
     }
+    explosion.start(center());
     velocity = Vector3D();
     position = Point3D() + CONSTANTS::AREA_SIZE * 2 * Vector3D();
   }
@@ -100,16 +102,18 @@ bool Enemy::tryDestroy() {
 void Enemy::render() {
   if (isGone()) return;
   // Model
-  glPushMatrix();
   if (destroyed) {
     for (Enemy::Limb* limb : limbs) {
       limb->render();
     }
+    explosion.render();
   } else {
+    glPushMatrix();
     glTranslated(position[0], position[1], position[2]);
     node->walk_gl();
 
     glDisable(GL_LIGHTING);
+
     // Number
     float green[] = {0.0, 0.392157, 0.0};
     float red[] = {0.333333, 0.066667, 0.066667};
@@ -124,9 +128,9 @@ void Enemy::render() {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);
     }
     glEnable(GL_LIGHTING);
+    glPopMatrix();
   }
 
-  glPopMatrix();
 }
 
 Enemy::Limb::Limb(SceneNode* node, Point3D position, Vector3D vel) : Mover(position, Vector3D()), node(node) {
