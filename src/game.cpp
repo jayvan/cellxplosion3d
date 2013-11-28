@@ -10,6 +10,11 @@
 using namespace std;
 
 Game::Game() {
+  enemySpeedBoost = 0;
+  enemyNumberBoost = 0;
+  enemiesDefeated = 0;
+  score = 0;
+
   // Spawn enemies
   for (unsigned int i = 0; i < CONSTANTS::INITIAL_ENEMIES; i++) {
     spawnEnemy();
