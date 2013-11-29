@@ -14,6 +14,7 @@ Player::Player() : Mover(Point3D(CONSTANTS::AREA_SIZE / 2, CONSTANTS::AREA_SIZE 
   }
 
   node = import_lua(CONSTANTS::PLAYER_MODEL_PATH);
+  position[2] = node->get_size()[2];
   rotation = 0;
   desiredRotation = 0;
 }

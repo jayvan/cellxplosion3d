@@ -14,6 +14,7 @@ char randomDigit() {
 
 Enemy::Enemy(Point3D position, Mover& target, double speedBoost, unsigned int numberBoost) : Mover(position, Vector3D(1, 1, 1)), target(target) {
   node = import_lua(CONSTANTS::ENEMY_MODEL_PATH);
+  position[2] = node->get_size()[2];
   Colour color(rand() % 255 / 255.0, rand() % 255 / 255.0, rand() % 255 / 255.0);
   PhongMaterial* material = new PhongMaterial(color, color, 10.0);
 

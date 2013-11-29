@@ -8,8 +8,10 @@ class Wall : public Mover {
 protected:
   void _update(double delta);
 
+  double rotation;
+
 public:
-  Wall(Point3D position, Vector3D size);
+  Wall(Point3D position, Vector3D size, double rotation);
   void render();
 };
 

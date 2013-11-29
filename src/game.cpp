@@ -4,6 +4,7 @@
 #include <list>
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <SOIL.h>
 #include <math.h>
 #include <iostream>
 
@@ -15,6 +16,9 @@ Game::Game() {
   enemiesDefeated = 0;
   score = 0;
 
+  floorTexture = SOIL_load_OGL_texture(CONSTANTS::FLOOR_TEXTURE_PATH.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_TEXTURE_REPEATS);
+  wallTexture = SOIL_load_OGL_texture(CONSTANTS::WALL_TEXTURE_PATH.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_TEXTURE_REPEATS);
+
   // Spawn enemies
   for (unsigned int i = 0; i < CONSTANTS::INITIAL_ENEMIES; i++) {
     spawnEnemy();
@@ -23,16 +27,16 @@ Game::Game() {
   // Spawn Walls
   // Bottom
   walls.push_back(Wall(Point3D(0.0, -(CONSTANTS::WALL_THICKNESS), 0.0),
-        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT)));
+        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 0.0));
   // Left
-  walls.push_back(Wall(Point3D(-(CONSTANTS::WALL_THICKNESS), 0, 0),
-        Vector3D(CONSTANTS::WALL_THICKNESS, CONSTANTS::AREA_SIZE, CONSTANTS::WALL_HEIGHT)));
+  walls.push_back(Wall(Point3D(0.0, 0.0 , 0.0),
+        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 90.0));
   // Top
   walls.push_back(Wall(Point3D(0, CONSTANTS::AREA_SIZE, 0),
-        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT)));
+        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 0.0));
   // Right
-  walls.push_back(Wall(Point3D(CONSTANTS::AREA_SIZE, 0, 0),
-        Vector3D(CONSTANTS::WALL_THICKNESS, CONSTANTS::AREA_SIZE, CONSTANTS::WALL_HEIGHT)));
+  walls.push_back(Wall(Point3D(0.0, -CONSTANTS::AREA_SIZE - CONSTANTS::WALL_THICKNESS, 0.0),
+        Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 90.0));
 }
 
 Game::~Game() {
@@ -174,6 +178,22 @@ void Game::submitNumber() {
   number = "";
 }
 
+void Game::renderFloor() {
+  GLfloat floor_colour[] = {1.0, 1.0, 1.0, 1.0};
+  glBindTexture(GL_TEXTURE_2D, floorTexture);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, floor_colour);
+  glBegin(GL_TRIANGLE_STRIP);
+  glTexCoord2s(2,2);
+  glVertex3f(CONSTANTS::AREA_SIZE, CONSTANTS::AREA_SIZE, 0);
+  glTexCoord2s(0,2);
+  glVertex3f(0, CONSTANTS::AREA_SIZE, 0);
+  glTexCoord2s(2,0);
+  glVertex3f(CONSTANTS::AREA_SIZE, 0, 0);
+  glTexCoord2s(0,0);
+  glVertex3f(0, 0, 0);
+  glEnd();
+}
+
 // Draw all of the game components
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -190,10 +210,14 @@ void Game::render() {
     enemy->render();
   }
 
+  glBindTexture(GL_TEXTURE_2D, wallTexture);
   // Draw walls
   for (Wall wall : walls) {
     wall.render();
   }
+
+  // Draw floor
+  renderFloor();
 
   player.render();
 }

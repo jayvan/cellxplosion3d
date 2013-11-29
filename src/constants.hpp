@@ -33,6 +33,10 @@ struct CONSTANTS {
   static const std::string PLAYER_MODEL_PATH;
   static const std::string ENEMY_MODEL_PATH;
 
+  // Textures
+  static const std::string FLOOR_TEXTURE_PATH;
+  static const std::string WALL_TEXTURE_PATH;
+
   // Sound
   static const std::string MUSIC_PATH;
   static const std::string BACKGROUND_MUSIC;

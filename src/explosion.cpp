@@ -12,7 +12,7 @@ void Explosion::start(Point3D position) {
 }
 
 void Explosion::update(double delta) {
-  if (time < 0.3) {
+  if (time < 0.2) {
     addParticles((unsigned int)rand() % 10);
     addSmokeParticles(rand() % 7);
   }
@@ -46,7 +46,7 @@ void Explosion::addSmokeParticles(unsigned int num) {
     Colour endColour(0.75, 0.75, 0.75);
     trajectory.normalize();
     trajectory = 0.5 * trajectory;
-    double lifetime = 1.0 + rand() % 1000 / 1000.0;
+    double lifetime = 0.5 + rand() % 1000 / 1000.0;
 
     particles.push_back(Particle(position, trajectory, colour, endColour, 0.06, lifetime));
   }
@@ -60,8 +60,8 @@ void Explosion::addParticles(unsigned int num) {
     Colour colour(1.0, 0.0, 0.0);
     Colour endColour(1.0, 0.75, 0.0);
     trajectory.normalize();
-    trajectory = 2 * trajectory;
-    double lifetime = 1.0 + rand() % 1000 / 1000.0;
+    trajectory = 3 * trajectory;
+    double lifetime = 0.0 + rand() % 1000 / 2000.0;
 
     particles.push_back(Particle(position, trajectory, colour, endColour, 0.04, lifetime));
   }

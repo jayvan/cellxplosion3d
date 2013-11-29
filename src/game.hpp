@@ -13,6 +13,9 @@ class Game {
   std::list<Wall> walls;
   std::string number;
   Player player;
+
+  GLuint floorTexture;
+  GLuint wallTexture;
   double enemySpeedBoost;
   unsigned int enemyNumberBoost;
   unsigned int enemiesDefeated;
@@ -21,6 +24,7 @@ class Game {
   void dial(char num);
   void submitNumber();
   void spawnEnemy();
+  void renderFloor();
 
 public:
   Game();

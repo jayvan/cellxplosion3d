@@ -72,9 +72,6 @@ void display(void) {
   glEnable(GL_NORMALIZE);
   glEnable(GL_DEPTH_TEST);
 
-  // Mix texture with color
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 
@@ -173,7 +170,7 @@ int main(int argc, char** argv){
 
   // intialize glut and main window
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE|GLUT_STENCIL);
   glutInitWindowSize(scrWidth, scrHeight);
   glutCreateWindow("Cellxplosion 3D");
 

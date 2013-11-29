@@ -5,7 +5,7 @@
 const double CONSTANTS::AREA_SIZE        =   25.0;
 const double CONSTANTS::CAMERA_ANGLE     =   20.0;
 const double CONSTANTS::CAMERA_ANGLE_RAD =   CONSTANTS::CAMERA_ANGLE * M_PI / 180.0;
-const double CONSTANTS::CAMERA_DISTANCE  =   20.0;
+const double CONSTANTS::CAMERA_DISTANCE  =   15.0;
 const double CONSTANTS::WALL_HEIGHT      =   3.0;
 const double CONSTANTS::WALL_THICKNESS   =   2.0;
 
@@ -32,6 +32,10 @@ const std::string CONSTANTS::DATA_PATH = "../data/";
 const std::string CONSTANTS::MODEL_PATH = DATA_PATH + "models/";
 const std::string CONSTANTS::PLAYER_MODEL_PATH = MODEL_PATH + "player.lua";
 const std::string CONSTANTS::ENEMY_MODEL_PATH = MODEL_PATH + "enemy.lua";
+
+// Textures
+const std::string CONSTANTS::FLOOR_TEXTURE_PATH = DATA_PATH + "textures/parking_lines.png";
+const std::string CONSTANTS::WALL_TEXTURE_PATH = DATA_PATH + "textures/brick.png";
 
 // Sound
 const std::string CONSTANTS::MUSIC_PATH = DATA_PATH + "background_music/";
