@@ -306,6 +306,28 @@ int gr_node_set_material_cmd(lua_State* L)
   return 0;
 }
 
+// Add a keyframe to a node.
+extern "C"
+int gr_node_add_keyframe_cmd(lua_State* L)
+{
+  GRLUA_DEBUG_CALL;
+
+  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
+  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+
+  SceneNode* self = selfdata->node;
+
+  double values[3];
+
+  for (int i = 0; i < 3; i++) {
+    values[i] = luaL_checknumber(L, i + 2);
+  }
+
+  self->add_keyframe(values[0], values[1], values[2]);
+
+  return 0;
+}
+
 // Add a scaling transformation to a node.
 extern "C"
 int gr_node_scale_cmd(lua_State* L)
@@ -427,6 +449,7 @@ static const luaL_reg grlib_functions[] = {
 static const luaL_reg grlib_node_methods[] = {
   {"__gc", gr_node_gc_cmd},
   {"add_child", gr_node_add_child_cmd},
+  {"add_keyframe", gr_node_add_keyframe_cmd},
   {"set_material", gr_node_set_material_cmd},
   {"scale", gr_node_scale_cmd},
   {"rotate", gr_node_rotate_cmd},

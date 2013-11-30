@@ -21,6 +21,8 @@ public:
   void normalize();
   virtual void normalize(Point3D& min, Point3D& max, Matrix4x4 transform);
   Vector3D get_size();
+  virtual void add_keyframe(double position, double xRot, double yRot);
+  virtual void animate(double delta);
 
   void set_transform(const Matrix4x4& m)
   {
@@ -38,6 +40,7 @@ public:
   {
     m_children.push_back(child);
   }
+
 
   void remove_child(SceneNode* child)
   {
@@ -84,6 +87,9 @@ public:
 
   virtual bool is_joint() const;
 
+  virtual void add_keyframe(double position, double xRot, double yRot);
+  virtual void animate(double delta);
+
   void set_joint_x(double min, double init, double max);
   void set_joint_y(double min, double init, double max);
 
@@ -92,10 +98,20 @@ public:
     void rotate(double delta);
   };
 
+  struct JointKeyframe {
+    double time;
+    double xAngle;
+    double yAngle;
+
+    JointKeyframe(double t, double x, double y) : time(t), xAngle(x), yAngle(y) { }
+  };
 
 protected:
 
   JointRange m_joint_x, m_joint_y;
+  std::list<JointKeyframe> keyframes;
+  double maximumAnimationPos;
+  double animationPos;
 };
 
 class GeometryNode : public SceneNode {

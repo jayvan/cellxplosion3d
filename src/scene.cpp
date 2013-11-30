@@ -39,6 +39,18 @@ void SceneNode::normalize() {
   scale(Vector3D(shrinkFactor, shrinkFactor, shrinkFactor));
 }
 
+void SceneNode::add_keyframe(double position, double xRot, double yRot) {
+  (void)position;
+  (void)xRot;
+  (void)yRot;
+}
+
+void SceneNode::animate(double delta) {
+  for (SceneNode* child : m_children) {
+    child->animate(delta);
+  }
+}
+
 SceneNode::ChildList SceneNode::explode() {
   ChildList leaves;
   explode(leaves, Matrix4x4());
@@ -146,6 +158,8 @@ bool SceneNode::is_joint() const
 JointNode::JointNode(const std::string& name)
   : SceneNode(name)
 {
+  maximumAnimationPos = 0;
+  animationPos= 0;
 }
 
 JointNode::~JointNode()
@@ -164,6 +178,39 @@ void JointNode::walk_gl() const
     (*it)->walk_gl();
   }
   glPopMatrix();
+}
+
+void JointNode::add_keyframe(double position, double xRot, double yRot) {
+  keyframes.push_back(JointNode::JointKeyframe(position, xRot, yRot));
+  if (position > maximumAnimationPos) maximumAnimationPos = position;
+}
+
+void JointNode::animate(double delta) {
+  for (SceneNode* child : m_children) {
+    child->animate(delta);
+  }
+
+  // Move joint to new position
+  animationPos += delta;
+  if (animationPos > maximumAnimationPos) animationPos -= maximumAnimationPos;
+
+  list<JointKeyframe>::iterator it = keyframes.begin();
+  JointKeyframe startFrame = *it;
+  it++;
+  while (it != keyframes.end()) {
+    JointKeyframe endFrame = *it;
+    if (animationPos >= startFrame.time && animationPos <= endFrame.time) {
+      double mult = (animationPos - startFrame.time) / (endFrame.time - startFrame.time);
+      double newX = startFrame.xAngle + (endFrame.xAngle - startFrame.xAngle) * mult;
+      double newY = startFrame.yAngle + (endFrame.yAngle - startFrame.yAngle) * mult;
+      set_joint_x(newX, newX, newX);
+      set_joint_y(newY, newY, newY);
+      break;
+    }
+
+    startFrame = endFrame;
+    it++;
+  }
 }
 
 bool JointNode::is_joint() const

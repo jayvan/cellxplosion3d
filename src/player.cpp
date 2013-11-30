@@ -55,6 +55,10 @@ void Player::setDirection(Direction direction, bool down) {
 }
 
 void Player::_update(double delta) {
+  if (velocity.length() != 0) {
+    node->animate(delta);
+  }
+
   double rotDiff = delta * CONSTANTS::ROTATION_SPEED;
 
   if (abs(rotation - desiredRotation) < rotDiff) {
@@ -62,7 +66,6 @@ void Player::_update(double delta) {
     rotation = desiredRotation;
     return;
   }
-
 
   double clockwiseDist = desiredRotation - rotation;
   if (clockwiseDist < 0) clockwiseDist += 360;
@@ -79,6 +82,7 @@ void Player::_update(double delta) {
   }
   if (rotation < 0) rotation += 360;
   if (rotation > 360) rotation -= 360;
+
 }
 
 void Player::render() {

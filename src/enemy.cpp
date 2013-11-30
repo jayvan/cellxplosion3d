@@ -63,6 +63,8 @@ void Enemy::_update(double delta) {
     velocity = toPlayer;
     velocity.normalize();
     velocity = speed * velocity;
+    double animateDelta = delta * speed / CONSTANTS::PLAYER_SPEED;
+    node->animate(animateDelta);
   }
 }
 
