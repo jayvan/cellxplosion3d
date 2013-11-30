@@ -8,6 +8,10 @@ const double CONSTANTS::CAMERA_ANGLE_RAD =   CONSTANTS::CAMERA_ANGLE * M_PI / 18
 const double CONSTANTS::CAMERA_DISTANCE  =   15.0;
 const double CONSTANTS::WALL_HEIGHT      =   3.0;
 const double CONSTANTS::WALL_THICKNESS   =   2.0;
+const GLfloat CONSTANTS::LIGHT_POSITION[] = { (GLfloat)CONSTANTS::AREA_SIZE / 2, (GLfloat)CONSTANTS::AREA_SIZE / 2, (GLfloat)CONSTANTS::CAMERA_DISTANCE, 1.0 };
+
+// Lighting
+const unsigned int CONSTANTS::SHADOWMAP_MULT = 1;
 
 // Player
 const double CONSTANTS::PLAYER_SPEED = 5.0;

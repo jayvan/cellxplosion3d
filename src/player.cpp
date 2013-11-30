@@ -2,6 +2,7 @@
 #include "constants.hpp"
 #include "scene_lua.hpp"
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <iostream>
 

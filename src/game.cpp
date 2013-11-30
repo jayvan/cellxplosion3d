@@ -2,6 +2,7 @@
 #include "constants.hpp"
 
 #include <list>
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <SOIL.h>
@@ -37,6 +38,33 @@ Game::Game() {
   // Right
   walls.push_back(Wall(Point3D(0.0, -CONSTANTS::AREA_SIZE - CONSTANTS::WALL_THICKNESS, 0.0),
         Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 90.0));
+
+  // Shadowmap setup
+  unsigned int shadowMapWidth = 700 * CONSTANTS::SHADOWMAP_MULT;
+  unsigned int shadowMapHeight = 700 * CONSTANTS::SHADOWMAP_MULT;
+
+  glGenTextures(1, &shadowmapDepth);
+  glBindTexture(GL_TEXTURE_2D, shadowmapDepth);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
+
+  glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  glGenFramebuffers(1, &shadowmapBuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER, shadowmapBuffer);
+
+  glDrawBuffer(GL_NONE);
+  glReadBuffer(GL_NONE);
+
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,GL_TEXTURE_2D, shadowmapDepth, 0);
+
+  glBindFramebuffer(GL_FRAMEBUFFER_EXT, 0);
+  // http://fabiensanglard.net/shadowmapping/index.php
 }
 
 Game::~Game() {

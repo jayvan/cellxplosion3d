@@ -1,5 +1,6 @@
 #include "particle.hpp"
 #include "algebra.hpp"
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <iostream>
 

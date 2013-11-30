@@ -3,6 +3,7 @@
 
 #include "algebra.hpp"
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 class Material {

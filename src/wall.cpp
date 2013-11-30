@@ -1,4 +1,5 @@
 #include "wall.hpp"
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 Wall::Wall(Point3D position, Vector3D size, double rotation) : Mover(position, size), rotation(rotation) {

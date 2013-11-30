@@ -1,5 +1,6 @@
 #include "explosion.hpp"
 #include "constants.hpp"
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <iostream>
 

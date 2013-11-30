@@ -2,6 +2,7 @@
 #define CS488_PRIMITIVE_HPP
 
 #include "algebra.hpp"
+#include <GL/glew.h>
 #include <GL/glut.h>
 
 class Primitive {

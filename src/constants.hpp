@@ -1,4 +1,6 @@
 #include <string>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 struct CONSTANTS {
   // Game world
@@ -8,6 +10,10 @@ struct CONSTANTS {
   static const double CAMERA_DISTANCE;
   static const double WALL_HEIGHT;
   static const double WALL_THICKNESS;
+  static const GLfloat LIGHT_POSITION[];
+
+  // Lighting
+  static const unsigned int SHADOWMAP_MULT;
 
   // Player
   static const double PLAYER_SPEED;

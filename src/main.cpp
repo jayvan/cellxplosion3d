@@ -4,16 +4,19 @@
 #include <sys/time.h>
 #include <algorithm>
 
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+
 #include "SoundManager.hpp"
 #include "game.hpp"
+#include "constants.hpp"
 
 #ifdef WIN32
 #include <windows.h>
 #endif /* WIN32 */
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
 
 using namespace std;
 
@@ -34,16 +37,14 @@ Game* game;
 //-------------------------------------
 
 void lights(){
-
   GLfloat light_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
   GLfloat light_diffuse[] = { 0.3, 0.3, 0.3, 1.0 };
   GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-  GLfloat light_position[] = { 100.0, 25.0, 25.0, 1.0 };
 
   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  glLightfv(GL_LIGHT0, GL_POSITION, CONSTANTS::LIGHT_POSITION);
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -126,7 +127,7 @@ void init(int argc, char** argv) {
   glShadeModel(GL_SMOOTH);
 
   // Black Background
-  glClearColor(1.00f, 1.00f, 1.00f, 0.0f);
+  glClearColor(0.00f, 0.00f, 0.00f, 0.0f);
 
   lights();
 
@@ -170,9 +171,10 @@ int main(int argc, char** argv){
 
   // intialize glut and main window
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE|GLUT_STENCIL);
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE);
   glutInitWindowSize(scrWidth, scrHeight);
   glutCreateWindow("Cellxplosion 3D");
+  glewInit();
 
   // initialize callback
   glutDisplayFunc(display);
