@@ -64,7 +64,6 @@ Game::Game() {
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,GL_TEXTURE_2D, shadowmapDepth, 0);
 
   glBindFramebuffer(GL_FRAMEBUFFER_EXT, 0);
-  // http://fabiensanglard.net/shadowmapping/index.php
 }
 
 Game::~Game() {
@@ -220,6 +219,31 @@ void Game::renderFloor() {
   glTexCoord2s(0,0);
   glVertex3f(0, 0, 0);
   glEnd();
+}
+
+void Game::calculateShadowmap() {
+  double modelView[16];
+  double projection[16];
+
+  GLdouble bias[16] = {
+    0.5, 0.0, 0.0, 0.0,
+    0.0, 0.5, 0.0, 0.0,
+    0.0, 0.0, 0.5, 0.0,
+    0.5, 0.5, 0.5, 1.0 };
+
+  glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+  glGetDoublev(GL_PROJECTION_MATRIX, projection);
+
+  glMatrixMode(GL_TEXTURE);
+  glActiveTextureARB(GL_TEXTURE7);
+
+  glLoadIdentity();
+  glLoadMatrixd(bias);
+
+  glMultMatrixd(projection);
+  glMultMatrixd(modelView);
+
+  glMatrixMode(GL_MODELVIEW);
 }
 
 // Draw all of the game components

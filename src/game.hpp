@@ -28,6 +28,7 @@ class Game {
   void submitNumber();
   void spawnEnemy();
   void renderFloor();
+  void calculateShadowmap();
 
 public:
   Game();
