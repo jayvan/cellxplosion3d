@@ -4,6 +4,7 @@
 #include "enemy.hpp"
 #include "player.hpp"
 #include "wall.hpp"
+#include "constants.hpp"
 #include <list>
 #include <string>
 
@@ -21,10 +22,20 @@ class Game {
   unsigned int enemiesDefeated;
   unsigned int score;
 
+  void loadSounds();
+  void playBeep();
+  void playError();
+  void playBoom();
   void dial(char num);
   void submitNumber();
   void spawnEnemy();
   void renderFloor();
+
+  // Sound
+  int musicId;
+  int goodBeepsBase;
+  int badBeepsBase;
+  int boomsBase;
 
 public:
   Game();

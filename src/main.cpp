@@ -4,7 +4,6 @@
 #include <sys/time.h>
 #include <algorithm>
 
-#include "SoundManager.hpp"
 #include "game.hpp"
 
 #ifdef WIN32
@@ -165,8 +164,6 @@ void update(int value) {
 int main(int argc, char** argv){
   scrWidth = 700;
   scrHeight = 700;
-
-  //SND_ID_1 = SM.LoadSound("card.wav");
 
   // intialize glut and main window
   glutInit(&argc, argv);

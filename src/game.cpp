@@ -1,12 +1,12 @@
-#include "game.hpp"
-#include "constants.hpp"
-
 #include <list>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <SOIL.h>
 #include <math.h>
+
 #include <iostream>
+#include "game.hpp"
+#include "SoundManager.hpp"
 
 using namespace std;
 
@@ -37,12 +37,74 @@ Game::Game() {
   // Right
   walls.push_back(Wall(Point3D(0.0, -CONSTANTS::AREA_SIZE - CONSTANTS::WALL_THICKNESS, 0.0),
         Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 90.0));
+
+  loadSounds();
 }
 
 Game::~Game() {
   for (Enemy* enemy : enemies) {
     delete enemy;
   }
+}
+
+void Game::loadSounds() {
+  goodBeepsBase = badBeepsBase = boomsBase = -1;
+
+  // Load background music
+  musicId = SM.LoadMusic(CONSTANTS::BACKGROUND_MUSIC);
+  SM.PlayMusic(musicId);
+
+  // Load beeps
+  for (unsigned int i = 1; i <= CONSTANTS::NUM_DIAL_GOOD; i++) {
+    string path = CONSTANTS::DIAL_GOOD;
+    path.append(string(to_string(i)));
+    path.append(CONSTANTS::EFFECT_SUFFIX);
+    if (goodBeepsBase == -1) {
+      goodBeepsBase = SM.LoadSound(path);
+    } else {
+      SM.LoadSound(path);
+    }
+  }
+
+  // load bad beeps
+  for (unsigned int i = 1; i <= CONSTANTS::NUM_DIAL_BAD; i++) {
+    string path = CONSTANTS::DIAL_BAD;
+    path.append(string(to_string(i)));
+    path.append(CONSTANTS::EFFECT_SUFFIX);
+    if (badBeepsBase == -1) {
+      badBeepsBase = SM.LoadSound(path);
+    } else {
+      SM.LoadSound(path);
+    }
+  }
+
+  // load booms
+  for (unsigned int i = 1; i <= CONSTANTS::NUM_ENEMY_DIE; i++) {
+    string path = CONSTANTS::ENEMY_DIE;
+    path.append(string(to_string(i)));
+    path.append(CONSTANTS::EFFECT_SUFFIX);
+    if (boomsBase == -1) {
+      boomsBase = SM.LoadSound(path);
+    } else {
+      SM.LoadSound(path);
+    }
+  }
+
+}
+
+void Game::playBeep() {
+  int beepNum = rand() % CONSTANTS::NUM_DIAL_GOOD + goodBeepsBase;
+  SM.PlaySound(beepNum);
+}
+
+void Game::playError() {
+  int beepNum = rand() % CONSTANTS::NUM_DIAL_BAD + badBeepsBase;
+  SM.PlaySound(beepNum);
+}
+
+void Game::playBoom() {
+  int boomNum = rand() % CONSTANTS::NUM_ENEMY_DIE + boomsBase;
+  SM.PlaySound(boomNum);
 }
 
 void Game::handleKey(unsigned char key, bool down) {
@@ -143,6 +205,10 @@ void Game::dial(char digit) {
     for (Enemy* enemy : invalidEnemies) {
       enemy->resetDigit();
     }
+
+    playBeep();
+  } else {
+    playError();
   }
 }
 
@@ -168,6 +234,8 @@ void Game::submitNumber() {
       if ((unsigned int)rand() % 100 < CONSTANTS::FORK_CHANCE) {
         spawnEnemy();
       }
+
+      playBoom();
     } else {
       (*it)->resetDigit();
       it++;

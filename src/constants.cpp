@@ -39,8 +39,17 @@ const std::string CONSTANTS::WALL_TEXTURE_PATH = DATA_PATH + "textures/brick.png
 
 // Sound
 const std::string CONSTANTS::MUSIC_PATH = DATA_PATH + "background_music/";
-const std::string CONSTANTS::BACKGROUND_MUSIC = MUSIC_PATH + "gameMusic.ogg";
-const std::string CONSTANTS::DEATH_MUSIC = MUSIC_PATH + "gameOver.ogg";
+const std::string CONSTANTS::BACKGROUND_MUSIC = MUSIC_PATH + "gameMusic.wav";
+const std::string CONSTANTS::DEATH_MUSIC = MUSIC_PATH + "gameOver.wav";
+
+const std::string CONSTANTS::SOUND_EFFECT_PATH = DATA_PATH + "sound_effect/";
+const std::string CONSTANTS::DIAL_GOOD = SOUND_EFFECT_PATH + "dialBeep";
+const unsigned int CONSTANTS::NUM_DIAL_GOOD = 7;
+const std::string CONSTANTS::DIAL_BAD = SOUND_EFFECT_PATH + "error";
+const unsigned int CONSTANTS::NUM_DIAL_BAD = 4;
+const std::string CONSTANTS::ENEMY_DIE = SOUND_EFFECT_PATH + "zombie";
+const unsigned int CONSTANTS::NUM_ENEMY_DIE = 7;
+const std::string CONSTANTS::EFFECT_SUFFIX = ".wav";
 
 double sample(const unsigned int probability[], const double values[]) {
   unsigned int roll = rand() % 100;

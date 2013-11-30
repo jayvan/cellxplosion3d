@@ -117,14 +117,14 @@ void Enemy::render() {
 
     // Number
     float green[] = {0.0, 0.392157, 0.0};
-    float red[] = {0.333333, 0.066667, 0.066667};
+    float white[] = {1.0, 1.0, 1.0};
     glColor3fv(green);
-    glRasterPos2d(0 , -0.4);
+    glRasterPos2d(0 , -0.5);
     for (unsigned int i = 0; i < number.length(); i++) {
-      // Change to red for untyped portion
+      // Change to white for untyped portion
       if (i == digitIndex) {
-        glColor3fv(red);
-        glRasterPos2d(0.2425 * digitIndex, -0.4);
+        glColor3fv(white);
+        glRasterPos2d(0.19 * digitIndex, -0.5);
       }
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);
     }
