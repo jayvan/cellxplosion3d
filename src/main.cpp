@@ -40,7 +40,7 @@ extern shaderProgram g_shader;
 //-------------------------------------
 
 void lights(){
-  GLfloat light_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
+  GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
   GLfloat light_diffuse[] = { 0.3, 0.3, 0.3, 1.0 };
   GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 

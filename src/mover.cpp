@@ -42,6 +42,7 @@ void Mover::rebound(Mover &other) {
 
   // Adjust left/right
   Vector3D pushDir = center() - other.center();
+  pushDir[2] = 0;
   pushDir.normalize();
   pushDir = 1.1 * pushDir;
   position = other.position + pushDir;

@@ -15,9 +15,6 @@ class Game {
   std::string number;
   Player player;
 
-  GLuint shadowmapBuffer;
-  GLuint shadowmapDepth;
-
   GLuint floorTexture;
   GLuint wallTexture;
   double enemySpeedBoost;
