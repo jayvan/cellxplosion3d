@@ -6,6 +6,9 @@
 #include <GL/gl.h>
 
 struct CONSTANTS {
+  static const unsigned int WINDOW_WIDTH;
+  static const unsigned int WINDOW_HEIGHT;
+
   // Game world
   static const double AREA_SIZE;
   static const double CAMERA_ANGLE;

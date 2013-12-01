@@ -167,8 +167,8 @@ void update(int value) {
 // main
 //-------------------------------------------------------------------
 int main(int argc, char** argv){
-  scrWidth = 700;
-  scrHeight = 700;
+  scrWidth = CONSTANTS::WINDOW_WIDTH;
+  scrHeight = CONSTANTS::WINDOW_HEIGHT;
 
   // intialize glut and main window
   glutInit(&argc, argv);

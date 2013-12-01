@@ -43,6 +43,32 @@ Game::Game() {
         Vector3D(CONSTANTS::AREA_SIZE, CONSTANTS::WALL_THICKNESS, CONSTANTS::WALL_HEIGHT), 90.0));
 
   loadSounds();
+
+  // Generate the framebuffer to hold the rendered scene
+  glGenFramebuffers(1, &frameBuffer);
+  glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+  GLuint attachments[1] = { GL_COLOR_ATTACHMENT0 };
+  glDrawBuffers(1,  attachments);
+
+  // Generate the texture to hold the rendered scene
+  glGenTextures(1, &renderedTexture);
+  glBindTexture(GL_TEXTURE_2D, renderedTexture);
+  glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, CONSTANTS::WINDOW_WIDTH, CONSTANTS::WINDOW_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
+
+  // Generate the depth buffer
+  glGenRenderbuffers(1, &depthBuffer);
+  glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, CONSTANTS::WINDOW_WIDTH, CONSTANTS::WINDOW_HEIGHT);
+
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+  if (glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+    cout << "FRAME BUFFER PROBLEM" << endl;
+  }
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 Game::~Game() {
@@ -266,11 +292,44 @@ void Game::renderFloor() {
   glEnd();
 }
 
+void Game::setFramebuffer() {
+  glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+  glEnable(GL_DEPTH_TEST);
+}
+
+void Game::drawFramebuffer() {
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glViewport(0, 0, 1024, 768);
+  gluOrtho2D(0, 1024, 0, 768);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  GLfloat wall_colour[] = {1.0, 1.0, 1.0, 1.0};
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, wall_colour);
+
+  g_shader.setActive(shaderProgram::TEXTURE);
+  glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+  glBegin(GL_QUADS);
+  glTexCoord2f(0, 0);
+  glVertex3d(0.0, 0.0, 0.0);
+  glTexCoord2f(1, 0);
+  glVertex3d(1000.0, 0.0, 0.0);
+  glTexCoord2f(1, 1);
+  glVertex3d(1000.0, 1000.0, 0);
+  glTexCoord2f(0, 1);
+  glVertex3d(0.0, 1000.0, 0.0);
+  glEnd();
+}
+
 // Draw all of the game components
 void Game::render() {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  //setFramebuffer();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity(); // Reset the view
-
   Point3D playerPosition = player.getPosition();
   glRotated(-CONSTANTS::CAMERA_ANGLE, 1.0, 0, 0);
   glTranslated(-playerPosition[0] - 0.5,
@@ -284,6 +343,7 @@ void Game::render() {
 
   glBindTexture(GL_TEXTURE_2D, wallTexture);
   g_shader.setActive(shaderProgram::TEXTURE);
+
   // Draw walls
   for (Wall wall : walls) {
     wall.render();
@@ -293,4 +353,6 @@ void Game::render() {
   renderFloor();
 
   player.render();
+
+  //drawFramebuffer();
 }

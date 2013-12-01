@@ -32,10 +32,11 @@ public:
 	{
 		SPECULAR,
                 TEXTURE,
+                THROUGH,
 		NONE
 	};
 
-	static const unsigned NUM_OF_SHADERS = 3;
+	static const unsigned NUM_OF_SHADERS = 4;
 
 	void initShaders()
 	{
@@ -46,6 +47,7 @@ public:
 
 		init(SPECULAR, (char *)"shaders/specular.vert", (char *)"shaders/specular.frag");
 		init(TEXTURE, (char *)"shaders/texture.vert", (char *)"shaders/texture.frag");
+		init(THROUGH, (char *)"shaders/through.vert", (char *)"shaders/through.frag");
 	}
 
 	/////////////////Supported Shaders END ///////////////////////

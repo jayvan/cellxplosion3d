@@ -1,6 +1,9 @@
 #include "constants.hpp"
 #include "math.h"
 
+const unsigned int CONSTANTS::WINDOW_WIDTH = 1024;
+const unsigned int CONSTANTS::WINDOW_HEIGHT = 768;
+
 // Game World
 const double CONSTANTS::AREA_SIZE        =   25.0;
 const double CONSTANTS::CAMERA_ANGLE     =   20.0;

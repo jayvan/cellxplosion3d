@@ -15,8 +15,12 @@ class Game {
   std::string number;
   Player player;
 
+  GLuint frameBuffer;
+  GLuint renderedTexture;
+  GLuint depthBuffer;
   GLuint floorTexture;
   GLuint wallTexture;
+  GLuint bufferVertices;
   double enemySpeedBoost;
   unsigned int enemyNumberBoost;
   unsigned int enemiesDefeated;
@@ -30,6 +34,8 @@ class Game {
   void submitNumber();
   void spawnEnemy();
   void renderFloor();
+  void setFramebuffer();
+  void drawFramebuffer();
 
   // Sound
   int musicId;
