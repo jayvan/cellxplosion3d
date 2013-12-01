@@ -1,7 +1,10 @@
 #include "material.hpp"
+#include "shader.hpp"
 #include <SOIL.h>
 #include <GL/glut.h>
 #include <iostream>
+
+extern shaderProgram g_shader;
 
 using namespace std;
 
@@ -32,10 +35,11 @@ void PhongMaterial::apply_gl() const
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_colour);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_shininess);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuse_colour);
+  g_shader.setActive(shaderProgram::SPECULAR);
 }
 
 TextureMaterial::TextureMaterial(const char* filename, Material* color) {
-  texture = SOIL_load_OGL_texture(filename, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+  texture = SOIL_load_OGL_texture(filename, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_TEXTURE_REPEATS);
   TextureMaterial::color = color;
 }
 
@@ -53,4 +57,5 @@ bool TextureMaterial::is_texture() const {
 void TextureMaterial::apply_gl() const {
   color->apply_gl();
   glBindTexture(GL_TEXTURE_2D, texture);
+  g_shader.setActive(shaderProgram::TEXTURE);
 }

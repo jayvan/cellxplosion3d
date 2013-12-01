@@ -109,7 +109,7 @@ int SoundManager::LoadMusic(std::string file){
 
 int SoundManager::PlayMusic(int snd){
     if(snd<0 && snd>=nMusics) return -1;
-    Mix_PlayMusic(music[snd], 1 /*-1*/);
+    Mix_PlayMusic(music[snd], -1);
     return 0;
 }
 

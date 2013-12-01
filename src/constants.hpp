@@ -1,3 +1,6 @@
+#ifndef __CONSTANTS_H__
+#define __CONSTANTS_H__
+
 #include <string>
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -47,6 +50,16 @@ struct CONSTANTS {
   static const std::string MUSIC_PATH;
   static const std::string BACKGROUND_MUSIC;
   static const std::string DEATH_MUSIC;
+  static const std::string SOUND_EFFECT_PATH;
+  static const std::string DIAL_GOOD;
+  static const unsigned int NUM_DIAL_GOOD;
+  static const std::string DIAL_BAD;
+  static const unsigned int NUM_DIAL_BAD;
+  static const std::string ENEMY_DIE;
+  static const unsigned int NUM_ENEMY_DIE;
+  static const std::string EFFECT_SUFFIX;
 };
 
 double sample(const unsigned int probability[], const double values[]);
+
+#endif

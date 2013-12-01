@@ -12,6 +12,7 @@
 #include "SoundManager.hpp"
 #include "game.hpp"
 #include "constants.hpp"
+#include "shader.hpp"
 
 #ifdef WIN32
 #include <windows.h>
@@ -31,6 +32,8 @@ using namespace std;
 //-------------------------------------------------------------------
 int scrWidth, scrHeight;
 Game* game;
+
+extern shaderProgram g_shader;
 
 //-------------------------------------
 // fix lights
@@ -167,8 +170,6 @@ int main(int argc, char** argv){
   scrWidth = 700;
   scrHeight = 700;
 
-  //SND_ID_1 = SM.LoadSound("card.wav");
-
   // intialize glut and main window
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE);
@@ -185,6 +186,7 @@ int main(int argc, char** argv){
   glutTimerFunc(FRAME_TIME, update, clock());
 
   init(argc, argv);
+  g_shader.initShaders();
 
   reshape(scrWidth, scrHeight);
 

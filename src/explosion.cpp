@@ -1,10 +1,13 @@
 #include "explosion.hpp"
 #include "constants.hpp"
+#include "shader.hpp"
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <iostream>
 
 using namespace std;
+
+extern shaderProgram g_shader;
 
 void Explosion::start(Point3D position) {
   position[2] = 1;
@@ -30,6 +33,7 @@ void Explosion::update(double delta) {
 
 void Explosion::render() {
 
+  g_shader.setActive(shaderProgram::NONE);
   glDisable(GL_LIGHTING);
   for (Particle p : particles) {
     p.render();
