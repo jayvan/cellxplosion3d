@@ -21,6 +21,7 @@ public:
   ~Player();
   void render();
   void setDirection(Direction direction, bool down);
+  void reset();
 };
 
 #endif

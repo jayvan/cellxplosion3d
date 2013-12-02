@@ -57,6 +57,10 @@ const unsigned int CONSTANTS::NUM_DIAL_BAD = 4;
 const std::string CONSTANTS::ENEMY_DIE = SOUND_EFFECT_PATH + "zombie";
 const unsigned int CONSTANTS::NUM_ENEMY_DIE = 7;
 const std::string CONSTANTS::EFFECT_SUFFIX = ".wav";
+const std::string CONSTANTS::SCREAM = SOUND_EFFECT_PATH + "scream" + EFFECT_SUFFIX;
+
+const std::string CONSTANTS::GREETING = "Press enter to begin";
+const std::string CONSTANTS::SALUTATION = "Game Over";
 
 double sample(const unsigned int probability[], const double values[]) {
   unsigned int roll = rand() % 100;

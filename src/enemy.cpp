@@ -18,7 +18,6 @@ char randomDigit() {
 
 Enemy::Enemy(Point3D position, Mover& target, double speedBoost, unsigned int numberBoost) : Mover(position, Vector3D(1, 1, 1)), target(target) {
   node = import_lua(CONSTANTS::ENEMY_MODEL_PATH);
-  position[2] = node->get_size()[2];
   Colour color(rand() % 255 / 255.0, rand() % 255 / 255.0, rand() % 255 / 255.0);
   PhongMaterial* material = new PhongMaterial(color, color, 10.0);
 
@@ -94,16 +93,21 @@ bool Enemy::tryDestroy() {
   destroyed = digitIndex == number.length();
 
   if (destroyed) {
-    SceneNode::ChildList limbNodes = node->explode();
-    for (SceneNode* limb_node : limbNodes) {
-      limbs.push_back(new Limb(limb_node, position, velocity));
-    }
-    explosion.start(center());
-    velocity = Vector3D();
-    position = Point3D() + CONSTANTS::AREA_SIZE * 2 * Vector3D();
+    destroy();
   }
 
   return destroyed;
+}
+
+void Enemy::destroy() {
+  destroyed = true;
+  SceneNode::ChildList limbNodes = node->explode();
+  for (SceneNode* limb_node : limbNodes) {
+    limbs.push_back(new Limb(limb_node, position, velocity));
+  }
+  explosion.start(center());
+  velocity = Vector3D();
+  position = Point3D() + CONSTANTS::AREA_SIZE * 2 * Vector3D();
 }
 
 void Enemy::render() {
@@ -131,7 +135,7 @@ void Enemy::render() {
       // Change to white for untyped portion
       if (i == digitIndex) {
         glColor3fv(white);
-        glRasterPos2d(0.19 * digitIndex, -0.5);
+        glRasterPos2d(0.13 * digitIndex, -0.5);
       }
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number[i]);
     }

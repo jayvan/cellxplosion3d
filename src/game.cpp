@@ -19,6 +19,10 @@ Game::Game() {
   enemyNumberBoost = 0;
   enemiesDefeated = 0;
   score = 0;
+  gameOverTimeout = 0.0;
+  godMode = false;
+  gameOver = true;
+  neverPlayed = true;
 
   floorTexture = SOIL_load_OGL_texture(CONSTANTS::FLOOR_TEXTURE_PATH.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_TEXTURE_REPEATS);
   wallTexture = SOIL_load_OGL_texture(CONSTANTS::WALL_TEXTURE_PATH.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_TEXTURE_REPEATS);
@@ -77,12 +81,31 @@ Game::~Game() {
   }
 }
 
+void Game::reset() {
+  enemySpeedBoost = 0;
+  enemyNumberBoost = 0;
+  enemiesDefeated = 0;
+  score = 0;
+  gameOverTimeout = 0.0;
+  gameOver = true;
+
+  // Spawn enemies
+  for (unsigned int i = 0; i < CONSTANTS::INITIAL_ENEMIES; i++) {
+    spawnEnemy();
+  }
+
+  player.reset();
+}
+
 void Game::loadSounds() {
   goodBeepsBase = badBeepsBase = boomsBase = -1;
 
   // Load background music
   musicId = SM.LoadMusic(CONSTANTS::BACKGROUND_MUSIC);
   SM.PlayMusic(musicId);
+
+  // Load player scream
+  scream = SM.LoadSound(CONSTANTS::SCREAM);
 
   // Load beeps
   for (unsigned int i = 1; i <= CONSTANTS::NUM_DIAL_GOOD; i++) {
@@ -137,6 +160,24 @@ void Game::playBoom() {
   SM.PlaySound(boomNum);
 }
 
+void Game::endGame() {
+  if (gameOverTimeout > 0) {
+    return;
+  }
+
+  SM.PlaySound(scream);
+  gameOverTimeout = 2.0;
+  neverPlayed = false;
+
+  list<Enemy*>::iterator it = enemies.begin();
+  while (it != enemies.end()) {
+    (*it)->destroy();
+    it++;
+  }
+
+  return;
+}
+
 void Game::handleKey(unsigned char key, bool down) {
   // Movement keys
   switch (key) {
@@ -156,8 +197,17 @@ void Game::handleKey(unsigned char key, bool down) {
     case 'D':
       player.setDirection(Player::RIGHT, down);
       break;
+    case 'g':
+    case 'G':
+      if (down) {
+        godMode = !godMode;
+      }
     case 13: // Enter
-      submitNumber();
+      if (gameOver) {
+        gameOver = false;
+      } else {
+        submitNumber();
+      }
       break;
   }
 
@@ -169,7 +219,18 @@ void Game::handleKey(unsigned char key, bool down) {
 
 // Calls the update methods of each game component
 void Game::update(double delta) {
-  player.update(delta);
+  if (gameOverTimeout > 0) {
+    gameOverTimeout -= delta;
+    if (gameOverTimeout <= 0) {
+      reset();
+    }
+  }
+
+  if (gameOver)
+    return;
+
+  if (gameOverTimeout <= 0)
+    player.update(delta);
 
   // Update enemies
   list<Enemy*>::iterator it = enemies.begin();
@@ -179,6 +240,16 @@ void Game::update(double delta) {
       it = enemies.erase(it);
     } else {
       enemy->update(delta);
+      if (enemy->collidingWith(player)) {
+        if (godMode) {
+          enemy->destroy();
+          spawnEnemy();
+          spawnEnemy();
+        } else {
+          endGame();
+          return;
+        }
+      }
       list<Enemy*>::iterator other = enemies.begin();
       while (other != it) {
         enemy->rebound(**other);
@@ -196,7 +267,7 @@ void Game::spawnEnemy() {
     double degree = (2.0 * M_PI) * (double)(rand() % 1000) / 1000;
     double xPosition = cos(degree) * CONSTANTS::AREA_SIZE / 2 + CONSTANTS::AREA_SIZE / 2;
     double yPosition = sin(degree) * CONSTANTS::AREA_SIZE / 2 + CONSTANTS::AREA_SIZE / 2;
-    enemyPosition = Point3D(xPosition, yPosition, 0);
+    enemyPosition = Point3D(xPosition, yPosition, player.getPosition()[2]);
   }
 
   Enemy* enemy = new Enemy(enemyPosition, player, enemySpeedBoost, enemyNumberBoost);
@@ -325,21 +396,44 @@ void Game::drawFramebuffer() {
   glEnd();
 }
 
+void Game::drawGreeting() {
+  Point3D trans = player.getPosition();
+  glTranslated(trans[0], trans[1], trans[2]);
+  glDisable(GL_LIGHTING);
+  g_shader.setActive(shaderProgram::NONE);
+  float white[] = {1.0, 1.0, 1.0};
+  glColor3fv(white);
+  glRasterPos2d(-0.5 , -0.5);
+  for (unsigned int i = 0; i < CONSTANTS::GREETING.length(); i++) {
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, CONSTANTS::GREETING[i]);
+  }
+  glEnable(GL_LIGHTING);
+}
+
+void Game::drawGameover() {
+  Point3D trans = player.getPosition();
+  glTranslated(trans[0], trans[1], trans[2]);
+  glDisable(GL_LIGHTING);
+  g_shader.setActive(shaderProgram::NONE);
+  float white[] = {1.0, 1.0, 1.0};
+  glColor3fv(white);
+  glRasterPos2d(-0.5 , -0.5);
+  for (unsigned int i = 0; i < CONSTANTS::GREETING.length(); i++) {
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, CONSTANTS::GREETING[i]);
+  }
+  glEnable(GL_LIGHTING);
+}
+
 // Draw all of the game components
 void Game::render() {
-  //setFramebuffer();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity(); // Reset the view
+
   Point3D playerPosition = player.getPosition();
   glRotated(-CONSTANTS::CAMERA_ANGLE, 1.0, 0, 0);
   glTranslated(-playerPosition[0] - 0.5,
                -playerPosition[1] + (CONSTANTS::CAMERA_DISTANCE * tan(CONSTANTS::CAMERA_ANGLE_RAD)) - 0.5,
                -CONSTANTS::CAMERA_DISTANCE);
-
-  // Draw enemies
-  for (Enemy* enemy : enemies) {
-    enemy->render();
-  }
 
   glBindTexture(GL_TEXTURE_2D, wallTexture);
   g_shader.setActive(shaderProgram::TEXTURE);
@@ -352,7 +446,21 @@ void Game::render() {
   // Draw floor
   renderFloor();
 
-  player.render();
+  if (gameOverTimeout <= 0) {
+    player.render();
+  }
 
-  //drawFramebuffer();
+  // Draw enemies
+  for (Enemy* enemy : enemies) {
+    enemy->render();
+  }
+
+  if (gameOver) {
+    if (neverPlayed) {
+      drawGreeting();
+    } else {
+      drawGameover();
+    }
+    return;
+  }
 }

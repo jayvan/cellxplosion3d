@@ -60,7 +60,12 @@ struct CONSTANTS {
   static const unsigned int NUM_DIAL_BAD;
   static const std::string ENEMY_DIE;
   static const unsigned int NUM_ENEMY_DIE;
+  static const std::string SCREAM;
   static const std::string EFFECT_SUFFIX;
+
+  // Text
+  static const std::string GREETING;
+  static const std::string SALUTATION;
 };
 
 double sample(const unsigned int probability[], const double values[]);

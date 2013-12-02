@@ -45,6 +45,7 @@ public:
   void resetDigit();
   bool tryDestroy();
   bool isGone();
+  void destroy(); // Public for god mode
 };
 
 #endif

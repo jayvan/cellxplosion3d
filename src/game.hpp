@@ -25,6 +25,10 @@ class Game {
   unsigned int enemyNumberBoost;
   unsigned int enemiesDefeated;
   unsigned int score;
+  double gameOverTimeout;
+  bool godMode;
+  bool gameOver;
+  bool neverPlayed;
 
   void loadSounds();
   void playBeep();
@@ -36,12 +40,17 @@ class Game {
   void renderFloor();
   void setFramebuffer();
   void drawFramebuffer();
+  void drawGreeting();
+  void drawGameover();
+  void endGame();
+  void reset();
 
   // Sound
   int musicId;
   int goodBeepsBase;
   int badBeepsBase;
   int boomsBase;
+  int scream;
 
 public:
   Game();
